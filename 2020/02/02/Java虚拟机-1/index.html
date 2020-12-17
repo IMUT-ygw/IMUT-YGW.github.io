@@ -1,0 +1,1570 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="深入理解Java虚拟机, 小袁の博客">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>深入理解Java虚拟机 | 小袁の博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">小袁の博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">小袁の博客</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">深入理解Java虚拟机</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E5%AD%A6%E4%B9%A0/">
+                                <span class="chip bg-color">学习</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Jvm/" class="post-category">
+                                Jvm
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-02
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p> JVM是Java Virtual Machine（Java<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E6%9C%BA">虚拟机</a>）的缩写，JVM是一种用于计算设备的规范，它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。 </p>
+<h3 id="JVM的位置"><a href="#JVM的位置" class="headerlink" title="JVM的位置"></a><strong>JVM的位置</strong></h3><p>系统虚拟机模拟硬件部分，程序虚拟机例如jvm在操作系统之上。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/1.jpg"></p>
+<h3 id="JVM的整体结构"><a href="#JVM的整体结构" class="headerlink" title="JVM的整体结构"></a><strong>JVM的整体结构</strong></h3><p>细化后</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/jvm%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.jpg"></p>
+<a id="more"></a>
+
+<h3 id="JVM架构模型"><a href="#JVM架构模型" class="headerlink" title="JVM架构模型"></a>JVM架构模型</h3><p>一种是基于<strong>栈的指令</strong>集架构，另一种是基于<strong>寄存器的指令</strong>集架构</p>
+<p><strong>区别</strong></p>
+<p><strong><u>基于栈式指令集的特点</u></strong></p>
+<p>⚪设计和实现更简单，适用于资源受限的系统（打印机、自主独立的机器）</p>
+<p>⚪使用零地址指令分配的方式（无地址）</p>
+<p>⚪不需要硬件支持，可以执行好，更好的实现跨平台性</p>
+<p><strong><u>基于寄存器指令集的特点</u></strong></p>
+<p>⚪典型应用x86的二进制指令集，比如传统的PC以及Android的Davlik虚拟机。</p>
+<p>⚪指令集架构依赖于硬件，可移植性差</p>
+<p>⚪性能优秀执行更高效</p>
+<p>⚪大部分情况下，基于寄存器架构的指令集往往都是以一地址指令、二三地址指令为主。</p>
+<p>由于跨平台性的是设计，java的指令集都是基于栈式的指令集架构，因为不同平台的cpu架构不同，所以不能设计为基于寄存器架构的指令集，优点是跨平台性，指令集小，编译器容易实现。缺点是性能下降，实现同样的功能指令会更多。 </p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%A0%88%E5%BC%8F%E6%8C%87%E4%BB%A4%E9%9B%86%E4%BE%8B%E5%AD%90.jpg"></p>
+<h3 id="JVM生命周期"><a href="#JVM生命周期" class="headerlink" title="JVM生命周期"></a>JVM生命周期</h3><p><strong>虚拟机的启动</strong></p>
+<p>​        Java虚拟机的启动时通过引导类加载器创建一个初始类来完成的。每个类的父类都是Object类。类的加载器首先加载Object类，也就是根类加载器加载，运行main方法，进入main方法后再去执行其他类加载器。</p>
+<p><strong>虚拟机执行</strong></p>
+<p>​         执行一个 所谓的java程序的时候，真真正正在执行的是一个叫做java虚拟机的进程。</p>
+<p><strong>虚拟机退出</strong></p>
+<p>​    🌂 程序正常执行结束</p>
+<p>​    🌂 程序在执行时遇到异常或错误而终止</p>
+<p>​    🌂 可在代码中调用Runtime类的halt方法或System类的exit方法直接断开进程</p>
+<hr>
+<h2 id="类加载子系统"><a href="#类加载子系统" class="headerlink" title="类加载子系统"></a>类加载子系统</h2><p>类加载子系统负责从文件系统或者网络中加载Class文件，class文件在文件开头有特定的文件标识。它只负责加载Class文件，至于他是否运行则由执行引擎决定。</p>
+<p>类加载到内存后会生成一个大的Class实例，加载的类信息存放在一块名为方法区的内存空间。除了类的信息外，方法区还会存放运行时常量池信息，可能还包含字符串字面量和数字字面量。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AD%90%E7%B3%BB%E7%BB%9F.jpg"></p>
+<p><strong>举例说明</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AD%90%E7%B3%BB%E7%BB%9F%E4%B8%BE%E4%BE%8B.jpg"></p>
+<p>class 文件存在本地磁盘中，通过jvm类加载器，生成一个Class对象存在方法区中，通过调用内存中的构造方法创建出实例存储在堆中。      class文件加载到jvm中被称为DNA元数据模板。</p>
+<p>.class文件 -&gt; JVM -&gt; 最终成为元数据模板（类的加载器起到快递员的作用）</p>
+<h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><p>​    1、通过一个类的全限定类名获取定义此类的二进制流</p>
+<p>​    2、将这个字节流所代表的静态存储结构（文件中的代码部分）转化为方法区的运行时数据结构</p>
+<p>​    3、在内存中生成一个代表这个类的java.lang.Class对象，作为这个类的各种数据的访问入口。</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><h4 id="验证（Verify）"><a href="#验证（Verify）" class="headerlink" title="验证（Verify）"></a>验证（Verify）</h4><p>​    此阶段确保Class文件的字节流中包含信息符当前虚拟机要求，确保被加载类的正确性，不会危害到虚拟机自身。</p>
+<p>​    主要包括四种验证：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">1.文件格式验证：</span></span><br><span class="line"><span class="attr">（1）是否以魔数0xCAFEBABE开头。</span></span><br><span class="line"><span class="attr">（2）主、次版本号是否在当前虚拟机处理范围之内。</span></span><br><span class="line"><span class="attr">（3）常量池的常量中是否有不被支持的常量类型（检查常量tag标志）。</span></span><br><span class="line"><span class="attr">（4）指向常量的各种索引值中是否有指向不存在的常量或不符合类型的常量。</span></span><br><span class="line"><span class="attr">（5）CONSTANT_Utf8_info型的常量中是否有不符合UTF8编码的数据。</span></span><br><span class="line"><span class="attr">（6）Class文件中各个部分及文件本身是否有被删除的或附加的其他信息。</span></span><br><span class="line">  <span class="attr">......</span></span><br><span class="line"><span class="attr">2.元数据验证：</span></span><br><span class="line"><span class="attr">（1）这个类是否有父类（除了java.lang.Object之外，所有类都应当有父类）。</span></span><br><span class="line"><span class="attr">（2）这个类是否继承了不允许被继承的类（被final修饰的类）。</span></span><br><span class="line"><span class="attr">（3）如果这个类不是抽象类，是否实现了其父类或接口之中所要求实现的所有方法。</span></span><br><span class="line"><span class="attr">（4）类中的字段、方法是否与父类产生矛盾（例如覆盖了父类的final字段，或者出现不符合规则的方法重载，例如方法参数都一致，但返回值类型却不同等等）。</span></span><br><span class="line"> <span class="attr">......</span></span><br><span class="line"><span class="attr">3.字节码验证：</span></span><br><span class="line"><span class="attr">主要目的是通过数据流和控制流分析，确定程序语义是合法的、符合逻辑的。这个阶段将对类的方法体进行校验分析，保证被校验类的方法在运行时不会产生危害虚拟机安全的事件，例如：</span></span><br><span class="line"><span class="attr">（1）保证任意时刻操作数栈的数据类型与指令代码序列都能配合工作，例如不会出现类似这样的情况：在操作数栈放置了一个int类型的数据，使用时却按long类型来加载入本地变量表中。</span></span><br><span class="line"><span class="attr">（2）保证跳转指令不会跳转到方法体以外的字节码指令上。</span></span><br><span class="line"><span class="attr">（3）保证方法体中的类型转换是有效的，例如可以把一个子类对象赋值给父类数据类型，但是把父类对象赋值给子类数据类型，甚至把对象赋值给与它毫无继承关系、完全不相干的一个数据类型，则是危险不合法的。</span></span><br><span class="line"><span class="attr">......</span></span><br><span class="line"><span class="meta">(Halting</span> <span class="string">Problem:通过程序去校验程序逻辑是无法做到绝对准确的——不能通过程序准确的检查出程序是否能在有限时间之内结束运行。）</span></span><br><span class="line"><span class="attr">4.符号引用验证：</span></span><br><span class="line"><span class="attr">符号引用验证可以看作是类对自身以外（常量池中的各种符号引用）的信息进行匹配性校验，通常需要校验以下内容：</span></span><br><span class="line"><span class="attr">（1）符号引用中通过字符串描述的全限定名是否能够找到对应的类。</span></span><br><span class="line"><span class="attr">（2）在指定类中是否存在符合方法的字段描述符以及简单名称所描述的方法和字段。</span></span><br><span class="line"><span class="attr">（3）符号引用中的类、字段、方法的访问性（private、protected、public、default）是否可被当前类访问。</span></span><br><span class="line"> <span class="attr">......</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="准备（Perpare）"><a href="#准备（Perpare）" class="headerlink" title="准备（Perpare）"></a>准备（Perpare）</h4><p>为<strong>类变量</strong> 分配内存并且设置该类变量的默认初始值，即零值。 </p>
+<p>这里不包含用final修饰的static，因为final在编译的时候就会分配了。final常量在写代码时必须赋值。</p>
+<p>不会为实例变量分配，初始化时类变量会分配在方法区中，<strong>实例变量</strong>会被分配到堆中。</p>
+<h4 id="解析（Resolve）"><a href="#解析（Resolve）" class="headerlink" title="解析（Resolve）"></a>解析（Resolve）</h4><p>将常量池内的符号引用转化为直接引用过程。</p>
+<p><strong>符号引用</strong>是以字面量的实形式明确定义在常量池中，<strong>直接引用</strong>是指向目标的指针，或者相对偏移量 。</p>
+<p>加载一个类时，会加载许多<strong>系统资源</strong>，他们不会字节写入到class文件中，而是以一组符号引用来表示，此阶段就是将这组符号引用转化为直接引用，也就是说可执行的命令代码。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>初始化阶段就是执行类构造器方法<clinit>()的过程</clinit></p>
+<p>此方法不需要定义， 是<strong>javac编译器</strong>自动收集类中所有<strong>类变量的赋值动作</strong>和<strong>静态代码块中的语句</strong>合并而来。如果代码中没没有静态代码，则字节码文件中不会生成<clinit>()方法。</clinit></p>
+<p>构造器方法中指令按语句在源文件中出现的顺序执行。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%88%9D%E5%A7%8B%E5%8C%96%E9%9D%99%E6%80%81%E4%BB%A3%E7%A0%81.jpg"></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%88%9D%E5%A7%8B%E5%8C%96clinit.jpg"></p>
+<p><strong>特殊形况问题</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BB%A3%E7%A0%81.jpg"></p>
+<p>此代码中number在static代码块后面进行的初始化，赋值在前，结果为10，为什么？</p>
+<p>答：因为在链接的准备的阶段，会为类变量分配内存并赋零值，所以在初始化阶段前就已经被加载到内存，所以初始化阶段按照顺序执行，初始number == 0；然后静态代码块number = 20 最后 执行声明处number=10；</p>
+<p><strong>class文件中的init方法</strong></p>
+<p>class文件中还有一个方法就是<init>,每个类在声明的时候，内部至少存在一个类的构造器。</init></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/init%E6%96%B9%E6%B3%95.jpg" alt="init方法"></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/init%E6%BA%90%E7%A0%81.jpg" alt="init源码"></p>
+<hr>
+<h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p> <img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8.jpg" alt="类加载器"></p>
+<p>引导类加载器，扩展类加载器，系统类加载器，自定义类加载器</p>
+<p>从概念上讲，自定义类加载器一般指程序开发人员自定义一类类加载器，但是java虚拟机规范却没有定义，而是将所有派生于抽象类ClassLoader的类加载器都划分为自定义类加载器。 也就是说直接或间接继承这个类的加载器都划分为自定义类加载器。</p>
+<p>所以，jvm支持两种类型的加载器，分别为引导类加载器（Bootstrap ClassLoader ）和自定义类加载器（User-Defined ClassLoader）</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%BB%A7%E6%89%BFClassLoader%E7%9A%84%E7%B1%BB.jpg" alt="继承ClassLoader的类"></p>
+<p><strong>获取类加载器</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8.jpg" alt="获取类加载器"></p>
+<p>引导类加载器是Java核心类库，扩展类加载器上层就是引导类加载器，所以获取不到。</p>
+<h3 id="类加载器的分类"><a href="#类加载器的分类" class="headerlink" title="类加载器的分类"></a>类加载器的分类</h3><p><strong>引导类加载器</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%BC%95%E5%AF%BC%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%AE%80%E5%9B%BE.jpg" alt="引导类加载器简图"></p>
+<p><strong>扩展类加载器</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%89%A9%E5%B1%95%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%AE%80%E5%9B%BE.jpg" alt="扩展类加载器简图"></p>
+<p><strong>系统类加载器</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%AE%80%E5%9B%BE.jpg" alt="系统类加载器简图"></p>
+<p><strong>自定义类加载器</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%AE%80%E5%9B%BE.jpg" alt="自定义类加载器简图"></p>
+<h3 id="获取类加载器"><a href="#获取类加载器" class="headerlink" title="获取类加载器"></a>获取类加载器</h3><p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%8E%B7%E5%8F%96%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E7%9A%84%E9%80%94%E5%BE%84.jpg" alt="获取类加载器的途径"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoaderDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">//通过反射获取类加载器</span></span><br><span class="line">        ClassLoader classLoader = Class.forName(<span class="string">&quot;java.lang.String&quot;</span>).getClassLoader();</span><br><span class="line">        System.out.println(classLoader);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过当前线程上下文Thread.currentThread</span></span><br><span class="line">        ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">        System.out.println(contextClassLoader);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取当前系统类加载器</span></span><br><span class="line">        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader().getParent();</span><br><span class="line">        System.out.println(systemClassLoader);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">输出：</span><br><span class="line">    <span class="keyword">null</span></span><br><span class="line">    sun.misc.Launcher$AppClassLoader@18b4aac2</span><br><span class="line">    sun.misc.Launcher$ExtClassLoader@5e2de80c</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h2><p>Java虚拟机对class文件采用的是<strong>按需加载</strong>的方式，也就是说当需要使用该类时才会将他的class文件加载到内存生成class对象。而加载某个类的class文件时，Java虚拟机采用的是双亲委派模式。</p>
+<p><strong>工作原理</strong></p>
+<p>如果一个类加载器收到类加载请求，他并<strong>不会自己先去加载</strong>这个类，而是把这个<strong>请求委托给父类</strong>的加载器去执行。</p>
+<p>如果父类加载器还存在父类，则进一步<strong>向上委托</strong>，依次递归，请求最终将到达到顶层的启动的类加载器。</p>
+<p>如果父类加载器可以完成加载任务，就成黄金功返回。如果<strong>父类加载器无法完成</strong>此任务，子类加载器才会尝试自己去加载。</p>
+<p><strong>加载流程：</strong></p>
+<ol>
+<li>当AppClassLoader加载一个class时，它首先不会自己去尝试加载这个类，而是把类加载请求委派给父类加载器ExtClassLoader去完成。</li>
+<li>当ExtClassLoader加载一个class时，它首先也不会自己去尝试加载这个类，而是把类加载请求委派给BootStrapClassLoader去完成。</li>
+<li>如果BootStrapClassLoader加载失败（例如在$JAVA_HOME/jre/lib里未查找到该class），会使用ExtClassLoader来尝试加载；</li>
+<li>若ExtClassLoader也加载失败，则会使用AppClassLoader来加载，如果AppClassLoader也加载失败，则会报出异常ClassNotFoundException。</li>
+</ol>
+<p><strong>优势</strong></p>
+<p>避免类的重复加载（只要有类加载器去加载，其他类加载器就不会加载）</p>
+<p>保护程序安全，防止核心API被篡改。</p>
+<hr>
+<h2 id="沙箱安全机制"><a href="#沙箱安全机制" class="headerlink" title="沙箱安全机制"></a>沙箱安全机制</h2><p>沙箱安全机制是由基于双亲委派机制上 采取的一种JVM的自我保护机制,假设你要写一个java.lang.String 的类,由于双亲委派机制的原理,此请求会先交给Bootstrap试图进行加载,但是Bootstrap在加载类时首先通过包和类名查找rt.jar中有没有该类,有则优先加载rt.jar包中的类,因此就保证了java的运行机制不会被破坏.</p>
+<hr>
+<h2 id="类的主动使用与被动使用"><a href="#类的主动使用与被动使用" class="headerlink" title="类的主动使用与被动使用"></a>类的主动使用与被动使用</h2><p>在JVM中表示两个class对象是否为同一个类，存在两个必要条件。</p>
+<p>🌂 类的完整类名必须一致，包括包名</p>
+<p>🌂 加载这个类的ClassLoader必须相同</p>
+<blockquote>
+<p>JVM必须知道一个类是由启动类加载器，还是由用户类加载器加载的，如果该类是由用户类加载器加载的，那么jvm会将这个类加载器的一个引用作为类型信息的一部分保存到方法区中。也就是说该类用的哪个类加载器会被记录。</p>
+</blockquote>
+<p><strong>主动加载类</strong></p>
+<p>→ 创建类的实例，即创建对象</p>
+<p>→ 访问或修改类的静态变量</p>
+<p>→ 调用类的静态方法</p>
+<p>→  反射（比如：Class.forName(“Xxx.Xxx.xxx”)）</p>
+<p>→  初始化一个子类（会先初始化父类）</p>
+<p>→  Java虚拟机启动时被标明为启动类的类</p>
+<p>→  JDK1.7开始提供动态语言支持 java.incoke.MethodHandle实例的解析结果</p>
+<p><strong>被动加载类</strong></p>
+<p>除了上述七种情况，其他全是被动加载，都不会导致类的初始化（也就是生成<clinit>）</clinit></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%AD%90%E7%B3%BB%E7%BB%9F%E8%AF%A6%E7%BB%86.jpg" alt="类加载器子系统详细"></p>
+<hr>
+<h2 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h2><p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%BF%90%E8%A1%8C%E6%97%B6%E6%95%B0%E6%8D%AE%E5%8C%BA%E6%80%BB%E8%A7%88.jpg" alt="运行时数据区总览"></p>
+<h3 id="PC寄存器（程序计数器）"><a href="#PC寄存器（程序计数器）" class="headerlink" title="PC寄存器（程序计数器）"></a>PC寄存器（程序计数器）</h3><p>cpu中的寄存器存储指令相关的现场信息、cpu只有把数据装载到寄存器才能够运行。pc寄存器并非cpu中的物理寄存器，它是一种软件形式模拟硬件的一种抽象模拟。但要问起来，jvm中含有寄存器结构。</p>
+<p><strong>作用:</strong></p>
+<p>PC寄存器用来存储指向下一条指令的地址，执行引擎通过地址读取指令，并执行。</p>
+<p>他是一块很小的内存空间，几乎可以忽略不计，也是运行速度最快的存储区。</p>
+<p>在jvm规范中，每个线程都有自己独立的程序计数器，是线程私有的，生命周期与线程生命周期一致。</p>
+<p>任何时间，一个线程都有一个方法在执行，程序计数器会存取当前线程正在执行的java方法的jvm指令地址，或者如果执行的是native方法，则是未指定的值（undefined）因为程序计数器是java层面的，方法调用本地c或c++会显示不出来。</p>
+<p>寄存器中没有GC 和 OOM。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/PC%E5%AF%84%E5%AD%98%E5%99%A8%E7%AE%80%E5%9B%BE.jpg" alt="PC寄存器简图"></p>
+<p>pc寄存器存储<strong>指令地址</strong>，执行引擎拿到偏移地址并得到操作指令，将一系列的操作交给局部变量表，操作数栈实现数据的存取等操作。并要把字节码指令转化为机器指令，利用cpu进行运算。</p>
+<p><strong>面试问题</strong></p>
+<p><strong>问题一</strong>：使用pc寄存器存储字节码指令有什么用？或 为什么要用pc寄存器记录当前线程的执行地址？</p>
+<p> 答：因为cpu在工作时时不断切换线程的，每个线程都有一个程序计数器，当cpu切换回来时就可以通过程序计数器，知道该从什么地方继续执行。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8%E9%9D%A2%E8%AF%95%E5%9B%BE.jpg" alt="程序计数器面试图"></p>
+<p><strong>问题二：</strong>pc寄存器为什么会被设定线程私有？</p>
+<p>答：为了能够准确的记录各个线程正在执行的当前的字节码指令地址，最好的方法就是为每一个线程都要分配一个程序计数器。由于cpu时间片轮转的限制，众多线程在并发执行的过程中，任何一个确定的时刻，一个处理器或多核处理器的中的一个内核，只会执行某个线程的一条指令。这样必然会导致经常终端或恢复，线程与线程间相互独立，必须每个线程都有自己的程序计数器。</p>
+<h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><p><strong>内存中的栈和堆</strong></p>
+<p>栈解决运行问题，即程序如何执行，或者说如何处理数据。</p>
+<p>堆解决数据存储问题，数据怎么放，放在哪。</p>
+<hr>
+<p>Java虚拟机栈，早期也叫Java栈。每个线程创建时都会创建一个虚拟机栈，其内部保存一个一个栈帧，对应每个方法。线程私有，生命周期与线程相同。</p>
+<p>作用：主管Java程序的运行，保存方法的局部变量，部分结果，并参与方法的调用和返回。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%E7%AE%80%E5%9B%BE.jpg" alt="虚拟机栈简图"></p>
+<h4 id="栈中常见问题"><a href="#栈中常见问题" class="headerlink" title="栈中常见问题"></a>栈中常见问题</h4><p>① StackOverFlowError</p>
+<p>如果采用固定大小的虚拟机栈，每个线程创建时会独立选定栈的大小，如果线程请求分配的栈容量超过虚拟机栈允许的最大容量就会报错。</p>
+<p>StackOverflowError 是一个java中常出现的错误：在jvm运行时的数据区域中有一个java虚拟机栈，当执行java方法时会进行压栈弹栈的操作。在栈中会保存局部变量，操作数栈，方法出口等等。jvm规定了栈的最大深度，当执行时栈的深度大于了规定的深度，就会抛出StackOverflowError错误 （递归次数过多，栈帧就增多，整个操作数栈就会变大，可能报错）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackOverFlowDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Foo</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Foo();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Foo();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>②OutOfMemoryError（线程中空间不足 无法扩展虚拟机栈）</p>
+<p>如果虚拟机栈可以动态扩展，并且申请扩展时无法申请到足够内存，或者创建的新的线程时没有足够的内存去创建对应的虚拟机栈，就会报错。</p>
+<h4 id="栈的执行原理"><a href="#栈的执行原理" class="headerlink" title="栈的执行原理"></a>栈的执行原理</h4><p>jvm直接对栈的操作有两个，就是对于栈帧的<strong>压栈</strong>和<strong>出栈</strong></p>
+<p>不同线程中所包含的栈帧是不允许相互引用的，即不可能在一个栈帧中引用另一个栈帧中的方法。</p>
+<p>Java有<strong>两种返回函数</strong>的方式，一种是return指令，另一种是抛出异常。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%A0%88%E7%9A%84%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86.jpg" alt="栈的执行原理"></p>
+<h4 id="栈帧"><a href="#栈帧" class="headerlink" title="栈帧"></a>栈帧</h4><p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%A0%88%E5%B8%A7%E8%AF%A6%E7%BB%86%E5%9B%BE.jpg" alt="栈帧详细图"></p>
+<h5 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h5><p>也叫局部变量数组或本地变量表</p>
+<p>定义为一个数字数组，主要用于存储<strong>方法参数</strong>和定义在方法内部的<strong>局部变量</strong>，</p>
+<p>这些数据包括八种基本类型，对象引用，返回值类型。</p>
+<p>由于局部变量表是建立在线程的栈上，是线程的私有数据，不存在数据安全问题，涉及不到共享问题。</p>
+<p>局部变量表所需的容量是在编译器就确定下来,运行时不会改变。举例说明</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E4%B8%BE%E4%BE%8B.jpg" alt="局部变量表举例"></p>
+<p>保存在局部变量表的数据有：args参数   test对象 num基本类型 所以说局部变量表长度为3.</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E4%B8%BE%E4%BE%8B2.jpg" alt="局部变量表举例2"></p>
+<p><strong>局部变量表中的变量只在当前方法调用中有效</strong>，在方法执行时，虚拟机通过使用局部变量表完成参数值到参数变量列表的传递过程。<strong>当方法调用结束，随着方法栈帧的销毁，局部变量表也会随之销毁。</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%AD%97%E8%8A%82%E7%A0%81%E4%BB%8B%E7%BB%8D.jpg" alt="字节码介绍"></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/code.jpg" alt="code"></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%A1%8C%E5%8F%B7%E5%AF%B9%E5%BA%94%E8%A1%A8.jpg" alt="行号对应表"></p>
+<p>字节码指令的行号对应Java程序的行号的一个对应关系 </p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E7%9A%84%E5%88%BB%E7%94%BB.jpg" alt="局部变量表的刻画"></p>
+<p>对局部变量表数据的描述</p>
+<p>Nr.当前表的索引   Start PC 字节码指令的行号 </p>
+<p>Length作用范围   举例：例如main的参数args 长度是4 作用范围4 也就是说作用范围从他的Strat PC开始 向下4个指令都是它的作用范围，而且PC+length恒等于4说明字节码指令长度为4。</p>
+<p>name 变量名  Descriptor 对变量类型的描述</p>
+<h5 id="关于Slot的理解"><a href="#关于Slot的理解" class="headerlink" title="关于Slot的理解"></a>关于Slot的理解</h5><p>在局部变量表中，最基本的存储单位是Slot（变量槽）</p>
+<p>32位以内的类型只占一个slot（包括返回值类型），64位的类型（long和double）占两个slot。</p>
+<p>byte,short,char全部转化位int，boolean也转化为int ，0是false非0是true。引用类型占一个slot。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代码举例    </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">(String s)</span></span>&#123;</span><br><span class="line">        Date d = <span class="keyword">new</span> Date();</span><br><span class="line">        <span class="keyword">long</span> num = <span class="number">1l</span>;</span><br><span class="line">        String str = s + <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/slot%E4%B8%BE%E4%BE%8B.jpg" alt="slot举例"></p>
+<p>局部变量表0索引出还有一个this，因为这个方法不是静态方法，每个类都会含有构造器调用this关键字，除了静态方法不可调用this，其他非静态方法都可以调用，作用于全部非静态方法，所以每个0索引处都会有一个this参数。</p>
+<p><strong>slot重复利用</strong></p>
+<p>栈帧中的局部变量表中的槽位是可以重复利用的，如果一个局部变量过了其作用域，那么在其作用域之后声明的局部变量就很有可能会复用过期的局部变量的槽位，从而达到节省资源的目的。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/slot%E9%87%8D%E5%A4%8D%E5%88%A9%E7%94%A8.jpg" alt="slot重复利用"></p>
+<p>从代码可以看出，int b 变量只作用于大括号内，出括号后就作用不了了，在局部变量表中，已经给b开辟出空间，当b作用完后，后声明的c就会重复利用b的slot槽。所以在图中c的槽位索引与b相同。</p>
+<p><strong>局部变量表中的变量也是最重要的垃圾回收根节点，只要被局部变量表中直接或间接引用的对象都不会被回收。</strong></p>
+<h5 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h5><p>每一个独立的栈帧中除了包含局部变量表之外，还包含一个后进先出的操作数栈，也可以称之为表达式栈。</p>
+<p>在方法执行过程中，根据字节码指令，往栈中写入数据或提取数据，即入栈出栈。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88.jpg" alt="操作数栈"></p>
+<p>当一个方法开始执行时，一个新的栈帧会随之被创建出来，这个方法的操作数栈式空的，数组（操作数栈）一旦创建，就会确定长度，其所需的最大长度在编译器就定义好了，保存code属性中，为max_stack值。</p>
+<p>栈中任何一个元素都是可以任意的Java类型。</p>
+<p>🌂32bit的类型占用一个栈单位深度</p>
+<p>🌂64bit的类型占用两个栈单位深度</p>
+<hr>
+<p><strong>操作数栈操作流程</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%E4%BB%A3%E7%A0%81.jpg" alt="操作数栈代码"></p>
+<p><strong>过程一</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8801.jpg" alt="操作数栈01"></p>
+<p>代码经过编译后形成字节码指令0—10，pc寄存器存放索引0的地址指令，执行0地址指令，将变量15入操作数栈，<strong>起初局部变量表和操作数栈为空！</strong></p>
+<p><strong>过程二</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8802.jpg" alt="操作数栈02"></p>
+<p>pc寄存器指向下一条命令，将变量15出栈，并存入局部变量表中，0号索引存入this，所以在1号索引开始存入数据。 </p>
+<p><strong>过程三</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8803.jpg" alt="操作数栈03"></p>
+<p>pc寄存器指向下一条指令，将变量8入栈。</p>
+<p><strong>过程四</strong></p>
+<p>图略</p>
+<p>pc寄存器指向下一条指令，将变量8存入局部变量表。</p>
+<p><strong>过程五</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8805.jpg" alt="操作数栈05"></p>
+<p>pc寄存器指向下一条指令，取出局部变量表中索引1处的数据，压入操作数栈中。</p>
+<p><strong>过程六</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8806.jpg" alt="操作数栈06"></p>
+<p>pc寄存器指向下一条指令，取出局部变量表中索引2处的数据，压入操作数栈中。</p>
+<p>这样8 和 15 就进入操作数栈中，等待操作命令。</p>
+<p><strong>过程七</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8807.jpg" alt="操作数栈07"></p>
+<p>pc寄存器指向下一条指令，由执行引擎执行iadd操作（需要把字节码指令转化位机器指令），计算结果重新入栈。</p>
+<p><strong>过程八</strong></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%8808.jpg" alt="操作数栈08"></p>
+<p>pc寄存器指向下一条指令，将操作数栈中的结果取出，存入局部变量索引位3的位置。</p>
+<hr>
+<p>指令集不同： 当int取值 <strong>-1~5</strong> 采用iconst指令，取值 <strong>-128~127</strong> 采用bipush指令，取值 <strong>-32768~32767</strong> 采用sipush指令，取值 <strong>-2147483648~2147483647</strong> 采用 ldc 指令。</p>
+<p>如果int j = 800; 会显示sipush  short型int</p>
+<p> <strong>处理带有返回值得方法</strong></p>
+<p>如果被调用的方法带有返回值的话，其返回值将会被压入当前栈帧的操作数栈中，并更新PC寄存器中下一条需要执行的字节码指令。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%B8%A6%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%96%B9%E6%B3%95.jpg" alt="带有返回值的方法"></p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%B8%A6%E6%9C%89%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E6%96%B9%E6%B3%9501.jpg" alt="带有返回值的方法01"></p>
+<p>此方法调用getSum方法，并获取一个返回值，所以字节码指令的第一步要将返回的值取出并入栈。</p>
+<hr>
+<p>扩展：</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%B8%A7%E6%95%B0%E6%8D%AE%E5%8C%BA.jpg" alt="帧数据区"></p>
+<h5 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h5><p><strong>作用：指向运行时常量池的引用</strong></p>
+<p>每个栈帧内部都包含一个指向运行时常量池中该栈帧所属方法的引用，包含这个引用的目的就是为了支持当前方法的代码能够实现动态链接。 </p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E7%AE%80%E5%9B%BE.jpg" alt="动态链接简图"></p>
+<p>当class文件加载到内存后，运行时常量池随之加载到方法区中，栈帧中的动态链接，存储运行时常量池的符号引用。根据符号引用去运行时常量池中寻找当前栈帧所属的方法。</p>
+<h5 id="方法的调用"><a href="#方法的调用" class="headerlink" title="方法的调用"></a>方法的调用</h5><p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%96%B9%E6%B3%95%E7%9A%84%E8%B0%83%E7%94%A8.jpg" alt="方法的调用"></p>
+<h5 id="虚方法与非虚方法"><a href="#虚方法与非虚方法" class="headerlink" title="虚方法与非虚方法"></a>虚方法与非虚方法</h5><p>如果方法在编译期就确定了具体的调用版本，这个版本在运行时是不可变的，这个方法就称非虚方法。</p>
+<p><strong>静态方法、私有方法、final方法、实例构造器、父类方法</strong>都是非虚方法。</p>
+<p>其他方法称为虚方法</p>
+<p><strong>虚拟机提供了一下几条方法的调用指令：</strong></p>
+<p>普通的调用指令：</p>
+<p>1、invokestatic 调用静态方法</p>
+<p>2、invokespecial 调用<init>方法、私有方法及父类方法，final方法</init></p>
+<p>3、invokevirtual 调用所有虚方法</p>
+<p>4、invokeinterface 调用接口方法（肯定会被重写 所以为虚方法）</p>
+<p>动态调用指令</p>
+<p>5、invokedynamic 动态解析出调用的方法</p>
+<p><strong>指令代码实例</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*父类*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">    <span class="comment">//非虚方法--静态方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showStatic</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;father:&quot;</span> + string);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//非虚方法--final方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showFinal</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;father:&quot;</span> + string);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//非虚方法--私有方法</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">showPrivate</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;father:&quot;</span> + string);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*子类继承父类*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Son</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Son</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//非虚方法--静态方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">showStatic</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;son:&quot;</span> + string);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//非虚方法--私有方法</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">showPrivate</span><span class="params">(String string)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;son:&quot;</span> + string);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">       <span class="comment">//invokespecial Son.showPrivate</span></span><br><span class="line">       showPrivate(<span class="string">&quot;私有方法&quot;</span>);</span><br><span class="line">       <span class="comment">//invokestatic Son.showStatic&gt;</span></span><br><span class="line">       showStatic(<span class="string">&quot;静态&quot;</span>);</span><br><span class="line">       <span class="comment">//invokespecial Father.showFinal</span></span><br><span class="line">       <span class="keyword">super</span>.showFinal(<span class="string">&quot;父类final&quot;</span>);</span><br><span class="line">       <span class="comment">//nvokestatic Father.showStatic</span></span><br><span class="line">       <span class="keyword">super</span>.showStatic(<span class="string">&quot;父类静态&quot;</span>);</span><br><span class="line">       <span class="comment">//invokevirtual #19 &lt;method/Son.showFinal&gt;</span></span><br><span class="line">       showFinal(<span class="string">&quot;父类&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E8%99%9A%E6%96%B9%E6%B3%95.jpg" alt="虚方法"></p>
+<p>此代码中只有Father写有showFinal方法，当不是用super.showFinal调用时，字节码使用invokevirtual指令以虚方法的名义去调用final方法，但是定义中final方法是非虚方法，因为final方法不能被子类重写，再这里也认为他是非虚方法。 </p>
+<h5 id="关于invokedynamic指令"><a href="#关于invokedynamic指令" class="headerlink" title="关于invokedynamic指令"></a>关于invokedynamic指令</h5><p><strong>动态语言和静态语言</strong></p>
+<p>动态类型语言和静态类型语言的区别是<strong>对于类型检查是在编译期还是在运行期，</strong>再概括一点就是，静态类型语言是<strong>判断变量自身的类型信息</strong>，动态类型语言<strong>始判断变量值的类型信息</strong>，变量没有类型信息，变量值才有。</p>
+<p>例如：String name = “ygw”; 不可以写成 String name = ygw； 在编译器进行了类型检查，所以Java是静态语言</p>
+<p>再比如：js语言，var name = “ygw”为字符类新  var name = 123 为整形</p>
+<p>Java8以后支持lambda表达式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//无法确定实现的对象是谁，只有在运行时才能得知</span></span><br><span class="line">Func func = s -&gt; &#123;</span><br><span class="line">	System.out.print(<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/../../%E7%AC%94%E8%AE%B0/img/%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E4%BB%A3%E7%A0%81%E5%9B%BE.jpg"></p>
+<h5 id="方法的重写"><a href="#方法的重写" class="headerlink" title="方法的重写"></a>方法的重写</h5><p>虚方法表：</p>
+<p>​    在面向对象编程中，会频繁的使用到动态分配，如果在每次动态分派的过程中都要重新在类的方法元数据中搜索合适的目标的话就可能影响到执行效率。</p>
+<p>如果说类的结构很深，当我们调用一个虚方法时，可能是最里面的父类所持有的方法，如果对此方法频繁调用，每次都会浪费一定的时间去在每个类中寻找这个方法，为了提高性能，JVM在类的方法区建立一个虚方法表。使用s索引表来代替查找。（每个类都有一个虚方法表）</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/../../%E7%AC%94%E8%AE%B0/img/%E8%99%9A%E6%96%B9%E6%B3%95%E8%A1%A8.jpg"></p>
+<p>上图为虚方法表，Son继承Father类，Father继承Object  ，左右两边都是虚方法表，可进行重写。如果直接调用Son蓝色部分的虚方法，他不会通过Father类再去找Object类，在虚方法表中方法直接指向的就是Object类，提高了效率。然后如果想调用父类的方法，则需要从Son类查找到Father类再调用方法。</p>
+<h5 id="方法返回地址"><a href="#方法返回地址" class="headerlink" title="方法返回地址"></a>方法返回地址</h5><p>一个方法的执行后会有两种返回形式，一是执行引擎遇到任意方法返回的字节码指令，根据指令返回结果给上层调用者，称为<strong>正常返回</strong>。另一种是方法执行过程中遇到异常，并且这个异常没有再方法体中做处理（无论是虚拟机内部异常，还是抛出的异常），只要在方法表中没有搜到匹配的异常处理器，就会导致方法的退出，不会给上层调用者任何返回信息。</p>
+<h5 id="正常返回"><a href="#正常返回" class="headerlink" title="正常返回"></a>正常返回</h5><p>在字节码指令中，不同类新的返回值，有不同的字节码指令</p>
+<table>
+<thead>
+<tr>
+<th>字节码指令                             返回类型</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ireturn                                      boolean\byte\char\short\int</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>freturn                                      float</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>areturn                                     String\引用类型</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>dreturn                                     double</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>lreturn                                      long</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>return                                       void</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/../../%E7%AC%94%E8%AE%B0/img/ireturn%E8%BF%94%E5%9B%9E%E5%80%BC.jpg" alt="简单举例"></p>
+<h5 id="异常完成出口"><a href="#异常完成出口" class="headerlink" title="异常完成出口"></a>异常完成出口</h5><h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><blockquote>
+<p>1.8同1.7比，最大的差别就是：<strong>元数据区取代了永久代</strong>。元空间的本质和永久代类似，都是对JVM规范中方法区的实现。不过元空间与永久代之间最大的区别在于：<strong>元数据空间并不在虚拟机中，而是使用本地内存</strong>。</p>
+</blockquote>
+<p>​    当JVM使用类装载器装载某个类时，它首先要定位对应的class文件，然后读入这个class文件，最后，JVM提取该文件的内容信息，并将这些信息存储到方法区，最后返回一个class实例。</p>
+<p>🌂 <strong>方法区是什么？有哪些特点？</strong></p>
+<p>   方法区是系统分配的一个内存逻辑区域，是用来存储类型信息的(类型信息可理解为类的描述信息)。方法区主要有以下几个特点：<br>   **一.**方法区是线程安全的。由于所有的线程都共享方法区，所以，方法区里的数据访问必须被设计成线程安全的。例如，假如同时有两个线程都企图访问方法区中的同一个类，而这个类还没有被装入JVM，那么只允许一个线程去装载它，而其它线程必须等待<br>   **二.**方法区的大小不必是固定的，JVM可根据应用需要动态调整。同时，方法区也不一定是连续的，方法区可以在一个堆(甚至是JVM自己的堆)中自由分配。<br>   **三.**方法区也可被垃圾收集，当某个类不在被使用(不可触及)时，JVM将卸载这个类，进行垃圾收集</p>
+<p><strong>🌂 方法区里存放的是哪些内容？</strong></p>
+<p>  方法区里存的都是类型信息，也就是类的信息，而类的信息又包括以下内容：<br>   类的全限定名(类的全路径名)<br>  类的直接超类的全限定名(如果这个类是Object,则它没有超类)<br>  这个类是类型(类)还是接口<br>   类的访问修饰符,如public、abstract、final等<br>   所有的直接接口全限定名的有序列表(假如它实现了多个接口)<br>  <strong>常量池</strong><br>   字段、方法信息、<strong>类变量信息(静态变量)</strong>  装载该类的装载器的引用(classLoader)、类型引用(class)</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><blockquote>
+<p>堆及垃圾回收下一篇~~~</p>
+</blockquote>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>对于一个运行中的Java程序而言，它还可能会用到一些跟本地方法相关的数据区。当某个线程调用一个本地方法时，它就进入了一个全新的并且不再受虚拟机限制的世界。本地方法可以通过本地方法接口来访问虚拟机的运行时数据区，但不止如此，它还可以做任何它想做的事情。</p>
+<p>　　本地方法本质上时依赖于实现的，虚拟机实现的设计者们可以自由地决定使用怎样的机制来让Java程序调用本地方法。</p>
+<p>　　任何本地方法接口都会使用某种本地方法栈。当线程调用Java方法时，虚拟机会创建一个新的栈帧并压入Java栈。然而当它调用的是本地方法时，虚拟机会保持Java栈不变，不再在线程的Java栈中压入新的帧，虚拟机只是简单地动态连接并直接调用指定的本地方法。</p>
+<p><img src="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8.jpg"></p>
+<h2 id="什么是运行时数据区"><a href="#什么是运行时数据区" class="headerlink" title="什么是运行时数据区"></a>什么是运行时数据区</h2><p>Java虚拟机在执行Java程序得过程中会把它所管理得内存划分为若干个不同的数据区域，大致分为方法区、虚拟机栈、本地方法栈、堆、程序计数器。这些区域都有各自的用途，都有自己创建和销毁的时间。有的区域随着虚拟机的进程的启动而存在，比如方法区、堆。有的区域则是依赖用户线程的启动和结束而建立和销毁，比如虚拟机栈，程序计数器。</p>
+<h2 id="什么时是程序计数器"><a href="#什么时是程序计数器" class="headerlink" title="什么时是程序计数器"></a>什么时是程序计数器</h2><p>他是一块很小的内存空间，他的作用可以看作是当前线程所执行的字节码的行号指示器。在虚拟机的概念模型里，字节码解释器就是通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复登基础功能都需要依赖这个计数器来完成。<strong>由于Java虚拟机的多线程是通过线程轮流切换并分配处理器执行时间的方式来实现的，任何一个时刻，一个处理器质会执行一条线程中的指令。因此为了线程切换回来后能够恢复到正确的执行位置，每个线程都会有单独的程序计数器，换个线程之间的计数器互不影响，独立存储，称这样的区域为线程私有区域。</strong></p>
+<h2 id="什么是Java虚拟机栈"><a href="#什么是Java虚拟机栈" class="headerlink" title="什么是Java虚拟机栈"></a>什么是Java虚拟机栈</h2><p>他与程序计数器一样，也是线程私有的，生命周期与线程相同，虚拟机栈描述的是Java方法执行的内存模型，每个方法执行的时候都会创建一个栈帧，用于存储局部变量表、操作数栈、动态链接、方法出口等信息，每个方法被调用完成就对应一个栈帧从虚拟机栈出栈。</p>
+<h2 id="什么是堆"><a href="#什么是堆" class="headerlink" title="什么是堆"></a>什么是堆</h2><p>堆是Java虚拟机中所管理的内存中最大的一块，他是一块被所有线程共享的一块区域，在虚拟机启动时创建，此内存区域的唯一目的就是存放对象实例。在Java虚拟机规范中描述的是：所有对象及数组都要在堆上分配。</p>
+<p>堆也是垃圾收集器管理的主要区域，现在的垃圾回收器采用的<strong>分代收集算法</strong>，所以Java堆中还可以细分为新生代和老年代。在细致一点有Eden空间，from 幸存者区，to 幸存者区。无论任何划分，斗鱼存放的内容无关，无论哪个区域，存储的都是对象实例，进一步划分是为了更好挥手内存，或者更快的分配内存。</p>
+<p>堆也是可以动态扩展的，Java虚拟机规范的规定，Java堆可以储在物理上不连续的内存空间，只要逻辑上是连续的即可，就像我们的磁盘空间一样，在实现时，既可以实现成固定大小，也可进行动态扩展（通过Xmx和Xms实现），如果当堆中没有内存分配实例，并且堆无法进行扩展时，就会抛出OOM异常。</p>
+<h2 id="什么是方法区"><a href="#什么是方法区" class="headerlink" title="什么是方法区"></a>什么是方法区</h2><p>方法区和堆一样，都是线程共享的区域，它用于存储已被虚拟机加载的类信息、常量、静态变量等数据。Java虚拟机规范吧方法区描述为堆的一个逻辑部分。在HotSpot虚拟机上开发和部署程序的开发者来说，很多人成方法区为“永久代”。对于其他虚拟机来说不存在永久代这个概念。</p>
+<p>Java虚拟机规范对这个区域限制非常宽松，他和堆一样不需要连续的内存空间和可扩展外，后还可以选择不实现垃圾收集，这个区域较少的出现垃圾回收，这个区域回收的目标是针对常量池的回收和对数据类型的卸载，可抛出OOM异常。</p>
+<h4 id="方法区垃圾回收"><a href="#方法区垃圾回收" class="headerlink" title="方法区垃圾回收"></a>方法区垃圾回收</h4><p>永久代的垃圾收集主要回收两部分内容:废弃常量和无用的类。回收废弃常量与回收Java堆中的对象非常类似。以常量池中字面量的回收为例,假如一个字符串“abc” 已经进入了常量池中,但是当前系统没有任何一个String对象是叫做“abc”的，换句话说 ,就是没有任何String对象引用常量池中的“abc”常量 ,也没有其他地方引用了这个字面量,如果这时发生内存回收,而且必要的话,这个“abc”常量就会被系统清理出常量池。常量池中的其他类(接口)、方法、字段的符号引用也与此类似。</p>
+<p>判定一个常量是否是“废弃常量”比较简单,而要判定一个类是否是“无用的类”的条件则相对苛刻许多。类需要同时满足下面3个条件才能算是“无用的类”:</p>
+<p>🌂 该类所有的实例都已经被回收,也就是Java堆中不存在该类的任何实例。<br>🌂 加载该类的ClassLoader已经被回收。<br>🌂 该类对应的java.lang.Class对象没有在任何地方被引用,无法在任何地方通过反射访问该类的方法。</p>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><p>运行时常量池是方法区的一部分，Class文件中除了有类的版本、字段、方法、接口等信息外，还有以想信息是常量池，用于存放编译期生成的各种<strong>字面量</strong>和<strong>符号引用</strong>，这部分内容在类加载后存放到方法区的运行时常量池中。</p>
+<p>对于运行时常量池，Java虚拟机规范没有做任何的细节要求，不同的提供商实现的虚拟机可以按照自己的需要来实现这个区域，运行时常量池会把直接引用也存储到运行时常量池，运行时常量池相对于Class文件常量池的另外一个重要特征时具备<strong>动态性</strong>，Java并不要求常量一定只在编译器产生，运行期间也可将新的常量放入池中，这种特性被开发人员利用得比较多得便是String类的intern()方法。当常量池无法申请到内存空间时会抛出OOM异常。</p>
+<h2 id="对象访问是如何进行的？"><a href="#对象访问是如何进行的？" class="headerlink" title="对象访问是如何进行的？"></a>对象访问是如何进行的？</h2><p>Object obj = new Objeect();</p>
+<p>假设这个代码出现在方法体中，Object obj 这部分你语句将反映到Java栈的本地变量表中，作为一个reference类型数据出现。而new Object() 则反映到Java堆中，形成一块存储了Object类型的所有实例数据值的结构化内存，根据具体类型以及虚拟机实现的兑现该内存布局的不同，这块内存的长度是不固定的。并且Java堆中还要包含能查找此对象类型的数据的地址信息，也就是类信息（包括：对象类型、父类、实现的接口、方法等）。存储在方区中。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">袁国伟</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://luckyuan.top/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/">http://luckyuan.top/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">袁国伟</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E5%AD%A6%E4%B9%A0/">
+                                    <span class="chip bg-color">学习</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/12/17/README/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="基于meritcbeat的kafka运行信息调研">
+                        
+                        <span class="card-title">基于meritcbeat的kafka运行信息调研</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            kafka运行信息调研情况分析前言
+针对ELK获取 Kafka 如下运行信息内容：
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%B0%83%E7%A0%94/" class="post-category">
+                                    工作调研
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">学习</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%B7%A5%E4%BD%9C/">
+                        <span class="chip bg-color">工作</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/02/Java%E8%99%9A%E6%8B%9F%E6%9C%BA-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="深入理解Java虚拟机">
+                        
+                        <span class="card-title">深入理解Java虚拟机</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            简介 JVM是Java Virtual Machine（Java虚拟机）的缩写，JVM是一种用于计算设备的规范，它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。 
+JVM的位置系统虚拟机模拟硬件部分，程序虚拟
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Jvm/" class="post-category">
+                                    Jvm
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">学习</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2012-2020</span>
+            
+            <span id="year">2012</span>
+            <a href="/about" target="_blank">袁国伟</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
