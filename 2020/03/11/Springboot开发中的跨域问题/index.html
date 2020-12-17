@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="基于meritcbeat的kafka运行信息调研, 小袁の博客">
+    <meta name="keywords" content="Springboot开发中的跨域问题, 小袁の博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>基于meritcbeat的kafka运行信息调研 | 小袁の博客</title>
+    <title>Springboot开发中的跨域问题 | 小袁の博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">基于meritcbeat的kafka运行信息调研</h1>
+                    <h1 class="description center-align post-title">Springboot开发中的跨域问题</h1>
                 </div>
             </div>
         </div>
@@ -435,10 +435,6 @@
                                 <span class="chip bg-color">学习</span>
                             </a>
                         
-                            <a href="/tags/%E5%B7%A5%E4%BD%9C/">
-                                <span class="chip bg-color">工作</span>
-                            </a>
-                        
                     </div>
                     
                 </div>
@@ -447,8 +443,16 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%B0%83%E7%A0%94/" class="post-category">
-                                工作调研
+                            <a href="/categories/Java/" class="post-category">
+                                Java
+                            </a>
+                        
+                            <a href="/categories/Java/%E6%A1%86%E6%9E%B6/" class="post-category">
+                                框架
+                            </a>
+                        
+                            <a href="/categories/Java/%E6%A1%86%E6%9E%B6/%E8%B7%A8%E5%9F%9F/" class="post-category">
+                                跨域
                             </a>
                         
                     </div>
@@ -460,7 +464,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-17
+                    2020-03-11
                 </div>
                 
 
@@ -481,334 +485,20 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="kafka运行信息调研情况分析"><a href="#kafka运行信息调研情况分析" class="headerlink" title="kafka运行信息调研情况分析"></a>kafka运行信息调研情况分析</h2><p><strong>前言</strong></p>
-<p>针对ELK获取 Kafka 如下运行信息内容：</p>
-<a id="more"></a>
+                <h2 id="一、什么是跨域问题"><a href="#一、什么是跨域问题" class="headerlink" title="一、什么是跨域问题"></a>一、什么是跨域问题</h2><p>在开发当中总会出现前后端分离开发，这就可能导致前后端分别在两个不同的服务器上。但是浏览器有一个策略叫做：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/laixiangran/p/9064769.html">浏览器的同源策略</a>。所谓同源就是指<strong>协议，域名</strong>及<strong>端口</strong>要相同，这种策略是基于安全方面考虑提出来的，它是浏览器最核心也最基本的安全功能，可以说 Web 是构建在同源策略基础之上的，浏览器只是针对同源策略的一种实现。</p>
+<h2 id="二、没有同源策略限制可导致的问题"><a href="#二、没有同源策略限制可导致的问题" class="headerlink" title="二、没有同源策略限制可导致的问题"></a>二、没有同源策略限制可导致的问题</h2><h3 id="没有同源策略限制的接口请求"><a href="#没有同源策略限制的接口请求" class="headerlink" title="没有同源策略限制的接口请求"></a>没有同源策略限制的接口请求</h3><p>有一个小小的东西叫cookie大家应该知道，一般用来处理登录等场景，目的是让服务端知道谁发出的这次请求。如果你请求了接口进行登录，服务端验证通过后会在响应头加入Set-Cookie字段，然后下次再发请求的时候，浏览器会自动将cookie附加在HTTP请求的头字段Cookie中，服务端就能知道这个用户已经登录过了。知道这个之后，我们来看场景：<br>1.你准备去清空你的购物车，于是打开了买买买网站<a target="_blank" rel="noopener" href="http://www.maimaimai.com,然后登录成功,一看,购物车东西这么少,不行,还得买多点./">www.maimaimai.com，然后登录成功，一看，购物车东西这么少，不行，还得买多点。</a><br>2.你在看有什么东西买的过程中，你的好基友发给你一个链接<a href="http://www.nidongde.com，一脸yin笑地跟你说：“你懂的”，你毫不犹豫打开了。">www.nidongde.com，一脸yin笑地跟你说：“你懂的”，你毫不犹豫打开了。</a><br>3.你饶有兴致地浏览着<a href="http://www.nidongde.com，谁知这个网站暗地里做了些不可描述的事情！由于没有同源策略的限制，它向www.maimaimai.com发起了请求！聪明的你一定想到上面的话“服务端验证通过后会在响应头加入Set-Cookie字段，然后下次再发请求的时候，浏览器会自动将cookie附加在HTTP请求的头字段Cookie中”，这样一来，这个不法网站就相当于登录了你的账号，可以为所欲为了！如果这不是一个买买买账号，而是你的银行账号，那……">www.nidongde.com，谁知这个网站暗地里做了些不可描述的事情！由于没有同源策略的限制，它向www.maimaimai.com发起了请求！聪明的你一定想到上面的话“服务端验证通过后会在响应头加入Set-Cookie字段，然后下次再发请求的时候，浏览器会自动将cookie附加在HTTP请求的头字段Cookie中”，这样一来，这个不法网站就相当于登录了你的账号，可以为所欲为了！如果这不是一个买买买账号，而是你的银行账号，那……</a><br>这就是传说中的CSRF攻击<a target="_blank" rel="noopener" href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html">浅谈CSRF攻击方式</a>。<br>看了这波CSRF攻击我在想，即使有了同源策略限制，但cookie是明文的，还不是一样能拿下来。于是我看了一些cookie相关的文章<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004556040#articleHeader6">聊一聊 cookie</a>、<a target="_blank" rel="noopener" href="https://harttle.land/2015/08/10/cookie-session.html">Cookie/Session的机制与安全</a>，知道了服务端可以设置httpOnly，使得前端无法操作cookie，如果没有这样的设置，像XSS攻击就可以去获取到cookie<a target="_blank" rel="noopener" href="https://www.cnblogs.com/TankXiao/archive/2012/03/21/2337194.html">Web安全测试之XSS</a>；设置secure，则保证在https的加密通信中传输以防截获。</p>
+<h3 id="没有同源策略限制的Dom查询"><a href="#没有同源策略限制的Dom查询" class="headerlink" title="没有同源策略限制的Dom查询"></a>没有同源策略限制的Dom查询</h3><p>1.有一天你刚睡醒，收到一封邮件，说是你的银行账号有风险，赶紧点进<a target="_blank" rel="noopener" href="http://www.yinghang.com改密码.你吓尿了,赶紧点进去,还是熟悉的银行登录界面,你果断输入你的账号密码,登录进去看看钱有没有少了./">www.yinghang.com改密码。你吓尿了，赶紧点进去，还是熟悉的银行登录界面，你果断输入你的账号密码，登录进去看看钱有没有少了。</a><br>2.睡眼朦胧的你没看清楚，平时访问的银行网站是<a href="http://www.yinhang.com，而现在访问的是www.yinghang.com，这个钓鱼网站做了什么呢？">www.yinhang.com，而现在访问的是www.yinghang.com，这个钓鱼网站做了什么呢？</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; HTML</span><br><span class="line">&lt;iframe name&#x3D;&quot;yinhang&quot; src&#x3D;&quot;www.yinhang.com&quot;&gt;&lt;&#x2F;iframe&gt;</span><br><span class="line">&#x2F;&#x2F; JS</span><br><span class="line">&#x2F;&#x2F; 由于没有同源策略的限制，钓鱼网站可以直接拿到别的网站的Dom</span><br><span class="line">const iframe &#x3D; window.frames[&#39;yinhang&#39;]</span><br><span class="line">const node &#x3D; iframe.document.getElementById(&#39;你输入账号密码的Input&#39;)</span><br><span class="line">console.log(&#96;拿到了这个$&#123;node&#125;，我还拿不到你刚刚输入的账号密码吗&#96;)</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<ul>
-<li><p>集群名称</p>
-</li>
-<li><p>topic名称</p>
-</li>
-<li><p>分区名称</p>
-</li>
-<li><p>采集开始时间</p>
-</li>
-<li><p>采集结束时间</p>
-</li>
-<li><p>current_offset</p>
-</li>
-<li><p>log_end_offset</p>
-</li>
-<li><p>lag</p>
-</li>
-<li><p>消费者组</p>
-</li>
-<li><p>监控侧会根据topic名称+分区名称区分业务</p>
-</li>
-</ul>
-<p>—-调研结果如下文所示—-</p>
-</blockquote>
-<h3 id="一、配置metricbeat"><a href="#一、配置metricbeat" class="headerlink" title="一、配置metricbeat"></a>一、配置metricbeat</h3><p><strong>功能</strong></p>
-<ul>
-<li>定期收集操作系统或应用服务的指标数据存储到Elasticsearch中，进行实时分析</li>
-<li>与filebeat功能类似，作为采集信息的应用，它的主要功能是对系统或是某个应用进行性能指标信息的采集，并通过kibana加载可视化组件进行视图层面的展示=</li>
-</ul>
-<p><strong>目录截图</strong></p>
-<p><img src="/2020/12/17/README/1608084583055.png"></p>
-<p><strong>进入模板目录</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> modules.d</span><br></pre></td></tr></table></figure>
+<p>由此我们知道，同源策略确实能规避一些危险，不是说有了同源策略就安全，只是说同源策略是一种浏览器最基本的安全机制，毕竟能提高一点攻击的成本。其实没有刺不穿的盾，只是攻击的成本和攻击成功后获得的利益成不成正比。</p>
+<h2 id="三、跨域问题的解决方案"><a href="#三、跨域问题的解决方案" class="headerlink" title="三、跨域问题的解决方案"></a>三、跨域问题的解决方案</h2><h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><p>spring中可以采用的跨域配置方式如下：</p>
+<p>RequestMapping<br>在一般性的配置中，在controller前添加@CrossOrigin即可使用spring的默认配置，允许跨域<br>该注解也可以配置一些设定，适合针对个别的controller</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CrossOrigin</span></span><br></pre></td></tr></table></figure>
 
-<p>进入模板目录下可以看到有很多以某些应用名开头的 .yml 文件,其中就包含kafka.yml ,当yml带有.disabled后缀则表示此模块不可用。</p>
-<p><img src="/2020/12/17/README/1608084856287.png"></p>
-<p>也可以通过命令查看哪些模块可用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 查module列表  均在根目录下执行</span></span><br><span class="line">./metricbeat modules list</span><br><span class="line"><span class="comment">## 启用module</span></span><br><span class="line">./metricbeat modules <span class="built_in">enable</span> 模块名</span><br><span class="line"><span class="comment">## 禁用module</span></span><br><span class="line">./metricbeat modules <span class="built_in">disable</span> 模块名</span><br></pre></td></tr></table></figure>
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><p>实现WebMvcConfig接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCorsMappings</span><span class="params">(CorsRegistry registry)</span> </span>&#123;</span><br><span class="line">    registry.addMapping(<span class="string">&quot;/**&quot;</span>)</span><br><span class="line">            .allowedOrigins(<span class="string">&quot;*&quot;</span>)</span><br><span class="line">            .allowedMethods(<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;GET&quot;</span>, <span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;OPTIONS&quot;</span>, <span class="string">&quot;DELETE&quot;</span>)</span><br><span class="line">            .allowCredentials(<span class="keyword">true</span>)</span><br><span class="line">            .allowedHeaders(<span class="string">&quot;*&quot;</span>)</span><br><span class="line">            .maxAge(<span class="number">3600</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p> <img src="/2020/12/17/README/1608121492125.png"></p>
-<p>进入 <code>/usr/local/elk/beat/metricbeat/modules.d</code>目录下</p>
-<p>执行  <code>vim kafka.yml</code>   添加配置信息</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#根据需求配置kafka信息</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">module:</span> <span class="string">kafka</span></span><br><span class="line">  <span class="attr">metricsets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">partition</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">consumergroup</span></span><br><span class="line">  <span class="attr">period:</span> <span class="string">10s</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;127.0.0.1:9092&quot;</span>]</span><br><span class="line">  <span class="attr">topics:</span> []</span><br></pre></td></tr></table></figure>
-
-<h3 id="二、开启服务"><a href="#二、开启服务" class="headerlink" title="二、开启服务"></a>二、开启服务</h3><h5 id="1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat"><a href="#1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat" class="headerlink" title="1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat"></a><strong>1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat</strong></h5><p>启动过程略~</p>
-<h5 id="2、向kafka中添加topic"><a href="#2、向kafka中添加topic" class="headerlink" title="2、向kafka中添加topic"></a><strong>2、向kafka中添加topic</strong></h5><blockquote>
-<p>添加名为：first、second、third的topic</p>
-</blockquote>
-<p><strong><img src="/2020/12/17/README/1608176281715.png"></strong></p>
-<h5 id="3、向kafka中添加生产与消费"><a href="#3、向kafka中添加生产与消费" class="headerlink" title="3、向kafka中添加生产与消费"></a><strong>3、向kafka中添加生产与消费</strong></h5><p><img src="/2020/12/17/README/1608176333606.png"></p>
-<p><img src="/2020/12/17/README/1608176347929.png"></p>
-<h5 id="4、生产消费信息"><a href="#4、生产消费信息" class="headerlink" title="4、生产消费信息"></a><strong>4、生产消费信息</strong></h5><p><img src="/2020/12/17/README/1608176467039.png"></p>
-<p><img src="/2020/12/17/README/1608176480256.png"></p>
-<h5 id="5、metricbeat检测kafka信息"><a href="#5、metricbeat检测kafka信息" class="headerlink" title="5、metricbeat检测kafka信息"></a><strong>5、metricbeat检测kafka信息</strong></h5><p><img src="/2020/12/17/README/1608176512795.png"></p>
-<h3 id="三、数据及仪表盘展示"><a href="#三、数据及仪表盘展示" class="headerlink" title="三、数据及仪表盘展示"></a>三、数据及仪表盘展示</h3><h5 id="1、访问kibana"><a href="#1、访问kibana" class="headerlink" title="1、访问kibana"></a>1、访问kibana</h5><p><img src="/2020/12/17/README/1608176648764.png"></p>
-<h5 id="2、经过-索引模式-绑定后，查看数据"><a href="#2、经过-索引模式-绑定后，查看数据" class="headerlink" title="2、经过 索引模式  绑定后，查看数据"></a>2、经过 <u>索引模式</u>  绑定后，查看数据</h5><img src="/2020/12/17/README/1608177333264.png" alt="1608177333264" style="zoom: 150%;">
-
-<h5 id="3、对于kibana自带kafka试图进行分析"><a href="#3、对于kibana自带kafka试图进行分析" class="headerlink" title="3、对于kibana自带kafka试图进行分析"></a>3、对于kibana自带kafka试图进行分析</h5><ul>
-<li><strong>可通过分区名称区分业务</strong></li>
-</ul>
-<h1 id><a href="#" class="headerlink" title></a><img src="/2020/12/17/README/1608177411664.png"></h1><ul>
-<li><strong>可查看基础统计信息</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185480237.png"></p>
-<ul>
-<li><strong>Consumer Group Lag by Topic</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185618695.png"></p>
-<ul>
-<li><strong>Kafka Topic &amp; Consumer Offsets</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185719899.png"></p>
-<ul>
-<li><strong>Topic Details</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185778385.png"></p>
-<ul>
-<li><strong>Consumer Partition Reassignments</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185812441.png"></p>
-<ul>
-<li><strong>Kafka Consumer Group Clients</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608186160827.png"></p>
-<blockquote>
-<p><strong>整体预览</strong></p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608186122198.png"></p>
-<blockquote>
-<p><strong>PS: 以上是针对metricbeat模板自带的视图进行分析，不能代表所有数据信息！如有需要可根据某个字段自定义视图规则创建视图进行展示。</strong></p>
-</blockquote>
-<h5 id="4、kafka信息数据展示"><a href="#4、kafka信息数据展示" class="headerlink" title="4、kafka信息数据展示"></a>4、kafka信息数据展示</h5><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>示例信息</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>agent</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>cloud</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>event</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>host</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td><strong>kafka.broker.address</strong></td>
-<td><strong>dky3:9092</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.broker.id</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.broker.id</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.host</strong></td>
-<td><strong>172.xx.xx.xx</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.id</strong></td>
-<td><strong>consumer-1</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.member_id</strong></td>
-<td><strong>consumer-1-debf38cb-e430-4dae-a204-b8bc6e02c1b0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.consumer_lag</strong></td>
-<td><strong>6</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.error.code</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.id</strong></td>
-<td><strong>console-consumer-91738</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.meta</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.partition</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.broker.id</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.offset.newest</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.offset.oldest</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.id</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.insync_replica</strong></td>
-<td>true</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.is_leader</strong></td>
-<td>true</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.leader</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.replica</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic.name</strong></td>
-<td>first</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic_broker_id</strong></td>
-<td>0-first-0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic_id</strong></td>
-<td>0-first</td>
-</tr>
-<tr>
-<td><strong>kafka.topic.name</strong></td>
-<td>first</td>
-</tr>
-<tr>
-<td><strong>metricset.name</strong></td>
-<td>consumergroup</td>
-</tr>
-<tr>
-<td><strong>service.address</strong></td>
-<td>127.0.0.1:9092</td>
-</tr>
-<tr>
-<td><strong>metricset.period</strong></td>
-<td>10,000</td>
-</tr>
-<tr>
-<td><strong>service.type</strong></td>
-<td>kafka</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>host信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187095190.png"></p>
-<blockquote>
-<p>agent信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187191098.png"></p>
-<blockquote>
-<p>cloud信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187237329.png"></p>
-<blockquote>
-<p>event信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187284450.png"></p>
-<hr>
-<p><strong>JSON格式</strong></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;_index&quot;</span>: <span class="string">&quot;metricbeat-7.6.0-2020.12.17-000001&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_type&quot;</span>: <span class="string">&quot;_doc&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_id&quot;</span>: <span class="string">&quot;r2-zbnYBzRyPohzGrQDW&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_version&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;_score&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;_source&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@timestamp&quot;</span>: <span class="string">&quot;2020-12-17T03:14:05.745Z&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;event&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;dataset&quot;</span>: <span class="string">&quot;kafka.consumergroup&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;module&quot;</span>: <span class="string">&quot;kafka&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;duration&quot;</span>: <span class="number">5123651</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;kafka&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;consumergroup&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;console-consumer-91738&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;offset&quot;</span>: <span class="number">-1</span>,</span><br><span class="line">        <span class="attr">&quot;error&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;code&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;client&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;consumer-1&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;host&quot;</span>: <span class="string">&quot;172.16.8.69&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;member_id&quot;</span>: <span class="string">&quot;consumer-1-debf38cb-e430-4dae-a204-b8bc6e02c1b0&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;broker&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;dky3:9092&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;topic&quot;</span>: <span class="string">&quot;first&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;meta&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;consumer_lag&quot;</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="attr">&quot;partition&quot;</span>: <span class="number">0</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;broker&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;dky3:9092&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;topic&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;first&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;partition&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;topic_id&quot;</span>: <span class="string">&quot;0-first&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;ecs&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;1.4.0&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;host&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;739ad040c31645de8ef7129874abd2bb&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;containerized&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">&quot;hostname&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;architecture&quot;</span>: <span class="string">&quot;x86_64&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;os&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;platform&quot;</span>: <span class="string">&quot;centos&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;7 (Core)&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;family&quot;</span>: <span class="string">&quot;redhat&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;CentOS Linux&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;kernel&quot;</span>: <span class="string">&quot;3.10.0-957.el7.x86_64&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;codename&quot;</span>: <span class="string">&quot;Core&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;agent&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;c4618f22-50db-4f4d-a19e-fab9496c4713&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;7.6.0&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;metricbeat&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ephemeral_id&quot;</span>: <span class="string">&quot;3dd11062-5728-42cd-b998-9238b15d27ba&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;hostname&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;cloud&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;machine&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;Linux_8vcpu_32Gmem_22Gdisk&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;instance&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;i-000033e3&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;availability_zone&quot;</span>: <span class="string">&quot;nova&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;provider&quot;</span>: <span class="string">&quot;openstack&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;metricset&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;consumergroup&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;period&quot;</span>: <span class="number">10000</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;service&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;127.0.0.1:9092&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;kafka&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;fields&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@timestamp&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;2020-12-17T03:14:05.745Z&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h3><p>根据日志信息可知：存在大部分调研需求的内容，少部分内容名称不精确属于未知状态但有相似字段，需要时根据字段可进一步获取。</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>是否存在</th>
-<th>内容属性</th>
-<th>补充</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>集群名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>可获取到但本地为搭建集群</td>
-</tr>
-<tr>
-<td>topic名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>分区名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>采集开始时间</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在采集开始时间戳</td>
-</tr>
-<tr>
-<td>采集结束时间</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>未发现结束标志</td>
-</tr>
-<tr>
-<td>current_offset</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在partition.offset.newest</td>
-</tr>
-<tr>
-<td>log_end_offset</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在partition.offset.oldest</td>
-</tr>
-<tr>
-<td>lag</td>
-<td>是</td>
-<td>调研需求</td>
-<td>存在consumergroup.consumer_lag</td>
-</tr>
-<tr>
-<td>消费者组</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>监控侧会根据topic名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>分区名称区分业务</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>注意：此次调研es、metricbeat、kibana版本为7.6.0，kafka版本为2.11-2.2.2，zookeeper版本3.5.8，不同版本之间可能存在不同，以实际情况为准。</p>
-</blockquote>
+<p>当我们自定义拦截器时，因为请求经过先后的原因，会首先到达拦截器中，而不是先进入mapping映射中，所以返回的头信息并没有配置得跨域信息，浏览器就会报跨域错误。</p>
 
                 
             </div>
@@ -835,7 +525,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://luckyuan.top/2020/12/17/README/">http://luckyuan.top/2020/12/17/README/</a>
+                    <a href="http://luckyuan.top/2020/03/11/Springboot%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/">http://luckyuan.top/2020/03/11/Springboot%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -875,10 +565,6 @@
                             
                                 <a href="/tags/%E5%AD%A6%E4%B9%A0/">
                                     <span class="chip bg-color">学习</span>
-                                </a>
-                            
-                                <a href="/tags/%E5%B7%A5%E4%BD%9C/">
-                                    <span class="chip bg-color">工作</span>
                                 </a>
                             
                         </div>
@@ -1048,53 +734,47 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/12/17/README/">
+                <a href="/2020/03/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="基于meritcbeat的kafka运行信息调研">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="初识 “设计模式”">
                         
-                        <span class="card-title">基于meritcbeat的kafka运行信息调研</span>
+                        <span class="card-title">初识 “设计模式”</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            kafka运行信息调研情况分析前言
-针对ELK获取 Kafka 如下运行信息内容：
+                            设计模式说明随着软件项目的经验增加与深入，逐渐感觉到软件在代码上的冗余不断提高与可维护性的降低，亟待软件设计思想来指导我们的代码，如何变得更加优美动人，使得软件更加具有可维护性，可复用性，可拓展性，并达到软件的高内聚低耦合目标。 
+核心思想
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-17
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-12
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%B0%83%E7%A0%94/" class="post-category">
-                                    工作调研
+                            <a href="/categories/Java/" class="post-category">
+                                    Java
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
                     <a href="/tags/%E5%AD%A6%E4%B9%A0/">
                         <span class="chip bg-color">学习</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%B7%A5%E4%BD%9C/">
-                        <span class="chip bg-color">工作</span>
                     </a>
                     
                 </div>
@@ -1108,24 +788,25 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/05/16/%E9%AB%98%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88/">
+                <a href="/2020/02/12/Spring%E6%A1%86%E6%9E%B6%E5%9F%BA%E7%A1%80/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="深入理解多线程编程">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Spring框架实践">
                         
-                        <span class="card-title">深入理解多线程编程</span>
+                        <span class="card-title">Spring框架实践</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            Spring框架概述概述(1) Spring是一个开源框架
+(2) Spring是为了简化企业级开发而生，使用Spring，JavaBean就可以实现以前要靠EJB才能实现的功能，同样的功能，在EJB中需要繁琐的配置和复杂的代码实现，但在S
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-12
                             </span>
                         <span class="publish-author">
                             
@@ -1133,14 +814,6 @@
                             
                             <a href="/categories/Java/" class="post-category">
                                     Java
-                                </a>
-                            
-                            <a href="/categories/Java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
-                                    多线程
-                                </a>
-                            
-                            <a href="/categories/Java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E9%AB%98%E5%B9%B6%E5%8F%91/" class="post-category">
-                                    高并发
                                 </a>
                             
                             
