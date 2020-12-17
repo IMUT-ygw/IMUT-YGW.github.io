@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="基于meritcbeat的kafka运行信息调研, 小袁の博客">
+    <meta name="keywords" content="Logstash与kafka场景分析, 小袁の博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>基于meritcbeat的kafka运行信息调研 | 小袁の博客</title>
+    <title>Logstash与kafka场景分析 | 小袁の博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">基于meritcbeat的kafka运行信息调研</h1>
+                    <h1 class="description center-align post-title">Logstash与kafka场景分析</h1>
                 </div>
             </div>
         </div>
@@ -439,6 +439,10 @@
                                 <span class="chip bg-color">工作</span>
                             </a>
                         
+                            <a href="/tags/%E5%88%86%E6%9E%90/">
+                                <span class="chip bg-color">分析</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -460,7 +464,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-17
+                    2020-12-06
                 </div>
                 
 
@@ -481,334 +485,31 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="kafka运行信息调研情况分析"><a href="#kafka运行信息调研情况分析" class="headerlink" title="kafka运行信息调研情况分析"></a>kafka运行信息调研情况分析</h2><p><strong>前言</strong></p>
-<p>针对ELK获取 Kafka 如下运行信息内容：</p>
-<a id="more"></a>
-
-<blockquote>
-<ul>
-<li><p>集群名称</p>
-</li>
-<li><p>topic名称</p>
-</li>
-<li><p>分区名称</p>
-</li>
-<li><p>采集开始时间</p>
-</li>
-<li><p>采集结束时间</p>
-</li>
-<li><p>current_offset</p>
-</li>
-<li><p>log_end_offset</p>
-</li>
-<li><p>lag</p>
-</li>
-<li><p>消费者组</p>
-</li>
-<li><p>监控侧会根据topic名称+分区名称区分业务</p>
-</li>
-</ul>
-<p>—-调研结果如下文所示—-</p>
+                <h2 id="Logstash与kafka场景分析"><a href="#Logstash与kafka场景分析" class="headerlink" title="Logstash与kafka场景分析"></a>Logstash与kafka场景分析</h2><h4 id="情况一"><a href="#情况一" class="headerlink" title="情况一"></a>情况一</h4><blockquote>
+<p><strong>如果没有很大量，对数据要求不是很严谨,还不需要做日志过滤，可以直接只用</strong></p>
+<p><strong>工作模式：</strong>Beat将读取到的数据直接输出至elsearch，elsearch在交由Kibana进行展示</p>
 </blockquote>
-<h3 id="一、配置metricbeat"><a href="#一、配置metricbeat" class="headerlink" title="一、配置metricbeat"></a>一、配置metricbeat</h3><p><strong>功能</strong></p>
-<ul>
-<li>定期收集操作系统或应用服务的指标数据存储到Elasticsearch中，进行实时分析</li>
-<li>与filebeat功能类似，作为采集信息的应用，它的主要功能是对系统或是某个应用进行性能指标信息的采集，并通过kibana加载可视化组件进行视图层面的展示=</li>
-</ul>
-<p><strong>目录截图</strong></p>
-<p><img src="/2020/12/17/README/1608084583055.png"></p>
-<p><strong>进入模板目录</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> modules.d</span><br></pre></td></tr></table></figure>
-
-<p>进入模板目录下可以看到有很多以某些应用名开头的 .yml 文件,其中就包含kafka.yml ,当yml带有.disabled后缀则表示此模块不可用。</p>
-<p><img src="/2020/12/17/README/1608084856287.png"></p>
-<p>也可以通过命令查看哪些模块可用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 查module列表  均在根目录下执行</span></span><br><span class="line">./metricbeat modules list</span><br><span class="line"><span class="comment">## 启用module</span></span><br><span class="line">./metricbeat modules <span class="built_in">enable</span> 模块名</span><br><span class="line"><span class="comment">## 禁用module</span></span><br><span class="line">./metricbeat modules <span class="built_in">disable</span> 模块名</span><br></pre></td></tr></table></figure>
-
-<p> <img src="/2020/12/17/README/1608121492125.png"></p>
-<p>进入 <code>/usr/local/elk/beat/metricbeat/modules.d</code>目录下</p>
-<p>执行  <code>vim kafka.yml</code>   添加配置信息</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#根据需求配置kafka信息</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">module:</span> <span class="string">kafka</span></span><br><span class="line">  <span class="attr">metricsets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">partition</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">consumergroup</span></span><br><span class="line">  <span class="attr">period:</span> <span class="string">10s</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;127.0.0.1:9092&quot;</span>]</span><br><span class="line">  <span class="attr">topics:</span> []</span><br></pre></td></tr></table></figure>
-
-<h3 id="二、开启服务"><a href="#二、开启服务" class="headerlink" title="二、开启服务"></a>二、开启服务</h3><h5 id="1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat"><a href="#1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat" class="headerlink" title="1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat"></a><strong>1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat</strong></h5><p>启动过程略~</p>
-<h5 id="2、向kafka中添加topic"><a href="#2、向kafka中添加topic" class="headerlink" title="2、向kafka中添加topic"></a><strong>2、向kafka中添加topic</strong></h5><blockquote>
-<p>添加名为：first、second、third的topic</p>
+<p><img src="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/1606871156873.png"></p>
+<h4 id="情况二"><a href="#情况二" class="headerlink" title="情况二"></a>情况二</h4><blockquote>
+<p><strong>需要日志过滤</strong></p>
+<p><strong>工作模式：</strong>Beats 将搜集到的数据发送到 Logstash或elsearch，经 Logstash 解析、过滤后，将其发送到 Elasticsearch 存储，并由 Kibana 呈现给用户</p>
 </blockquote>
-<p><strong><img src="/2020/12/17/README/1608176281715.png"></strong></p>
-<h5 id="3、向kafka中添加生产与消费"><a href="#3、向kafka中添加生产与消费" class="headerlink" title="3、向kafka中添加生产与消费"></a><strong>3、向kafka中添加生产与消费</strong></h5><p><img src="/2020/12/17/README/1608176333606.png"></p>
-<p><img src="/2020/12/17/README/1608176347929.png"></p>
-<h5 id="4、生产消费信息"><a href="#4、生产消费信息" class="headerlink" title="4、生产消费信息"></a><strong>4、生产消费信息</strong></h5><p><img src="/2020/12/17/README/1608176467039.png"></p>
-<p><img src="/2020/12/17/README/1608176480256.png"></p>
-<h5 id="5、metricbeat检测kafka信息"><a href="#5、metricbeat检测kafka信息" class="headerlink" title="5、metricbeat检测kafka信息"></a><strong>5、metricbeat检测kafka信息</strong></h5><p><img src="/2020/12/17/README/1608176512795.png"></p>
-<h3 id="三、数据及仪表盘展示"><a href="#三、数据及仪表盘展示" class="headerlink" title="三、数据及仪表盘展示"></a>三、数据及仪表盘展示</h3><h5 id="1、访问kibana"><a href="#1、访问kibana" class="headerlink" title="1、访问kibana"></a>1、访问kibana</h5><p><img src="/2020/12/17/README/1608176648764.png"></p>
-<h5 id="2、经过-索引模式-绑定后，查看数据"><a href="#2、经过-索引模式-绑定后，查看数据" class="headerlink" title="2、经过 索引模式  绑定后，查看数据"></a>2、经过 <u>索引模式</u>  绑定后，查看数据</h5><img src="/2020/12/17/README/1608177333264.png" alt="1608177333264" style="zoom: 150%;">
-
-<h5 id="3、对于kibana自带kafka试图进行分析"><a href="#3、对于kibana自带kafka试图进行分析" class="headerlink" title="3、对于kibana自带kafka试图进行分析"></a>3、对于kibana自带kafka试图进行分析</h5><ul>
-<li><strong>可通过分区名称区分业务</strong></li>
-</ul>
-<h1 id><a href="#" class="headerlink" title></a><img src="/2020/12/17/README/1608177411664.png"></h1><ul>
-<li><strong>可查看基础统计信息</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185480237.png"></p>
-<ul>
-<li><strong>Consumer Group Lag by Topic</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185618695.png"></p>
-<ul>
-<li><strong>Kafka Topic &amp; Consumer Offsets</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185719899.png"></p>
-<ul>
-<li><strong>Topic Details</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185778385.png"></p>
-<ul>
-<li><strong>Consumer Partition Reassignments</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185812441.png"></p>
-<ul>
-<li><strong>Kafka Consumer Group Clients</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608186160827.png"></p>
-<blockquote>
-<p><strong>整体预览</strong></p>
+<p><img src="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/1606871142602.png" alt="1606871142602"></p>
+<h4 id="情况三"><a href="#情况三" class="headerlink" title="情况三"></a>情况三</h4><blockquote>
+<p><strong>加入Redis做简单队列缓存</strong></p>
+<p><strong>工作模式：</strong>Beat的读取效率相比于Logstash直接读取（logstash也能实现读取日志文件的功能）效率是非常高的，Filebeat读取完数据后，会发送至Logstash，当数据量过大时，会造成Logstash压力过大影响效率，所以在Beat与Logstash中间加入缓冲层Redis，再加上Logstash的背压策略，会很好的处理数据量过大带来的性能问题。</p>
+<p><strong>背压策略</strong>：</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/logstash/current/persistent-queues.html#backpressure-persistent-queue">https://www.elastic.co/guide/en/logstash/current/persistent-queues.html#backpressure-persistent-queue</a></p>
 </blockquote>
-<p><img src="/2020/12/17/README/1608186122198.png"></p>
-<blockquote>
-<p><strong>PS: 以上是针对metricbeat模板自带的视图进行分析，不能代表所有数据信息！如有需要可根据某个字段自定义视图规则创建视图进行展示。</strong></p>
+<p><img src="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/1606871130359.png" alt="1606871130359"></p>
+<h4 id="情况四"><a href="#情况四" class="headerlink" title="情况四"></a>情况四</h4><blockquote>
+<p>终极版加入Kafka,因为redis作为消息队列不是强项而且redis集群不如专业的消息发布系统kafka</p>
+<p><strong>kafka简介：</strong>数据缓冲队列。作为消息队列解耦了处理过程，同时提高了可扩展性。具有峰值处理能力，使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。</p>
+<p><strong>工作模式：</strong>kafka相比于redis比较专业，当我们使用消息队列时，Logstash将在磁盘上缓冲事件，直到队列大小达到我们设置的大小（例如8GB）。当队列已满，并且达到大小限制时，Logstash将不再接受新事件。情况三中说到<u>背压策略</u>，每个输入均独立处理背压。例如，当 输入遇到反压力时，它不再接受新的连接，而是等待直到持久队列有空间接受更多事件为止。过滤器和输出阶段完成对队列中现有事件的处理并对其进行确认后，Logstash将自动开始接受新事件。</p>
 </blockquote>
-<h5 id="4、kafka信息数据展示"><a href="#4、kafka信息数据展示" class="headerlink" title="4、kafka信息数据展示"></a>4、kafka信息数据展示</h5><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>示例信息</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>agent</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>cloud</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>event</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>host</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td><strong>kafka.broker.address</strong></td>
-<td><strong>dky3:9092</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.broker.id</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.broker.id</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.host</strong></td>
-<td><strong>172.xx.xx.xx</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.id</strong></td>
-<td><strong>consumer-1</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.member_id</strong></td>
-<td><strong>consumer-1-debf38cb-e430-4dae-a204-b8bc6e02c1b0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.consumer_lag</strong></td>
-<td><strong>6</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.error.code</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.id</strong></td>
-<td><strong>console-consumer-91738</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.meta</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.partition</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.broker.id</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.offset.newest</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.offset.oldest</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.id</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.insync_replica</strong></td>
-<td>true</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.is_leader</strong></td>
-<td>true</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.leader</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.replica</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic.name</strong></td>
-<td>first</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic_broker_id</strong></td>
-<td>0-first-0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic_id</strong></td>
-<td>0-first</td>
-</tr>
-<tr>
-<td><strong>kafka.topic.name</strong></td>
-<td>first</td>
-</tr>
-<tr>
-<td><strong>metricset.name</strong></td>
-<td>consumergroup</td>
-</tr>
-<tr>
-<td><strong>service.address</strong></td>
-<td>127.0.0.1:9092</td>
-</tr>
-<tr>
-<td><strong>metricset.period</strong></td>
-<td>10,000</td>
-</tr>
-<tr>
-<td><strong>service.type</strong></td>
-<td>kafka</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>host信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187095190.png"></p>
-<blockquote>
-<p>agent信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187191098.png"></p>
-<blockquote>
-<p>cloud信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187237329.png"></p>
-<blockquote>
-<p>event信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187284450.png"></p>
-<hr>
-<p><strong>JSON格式</strong></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;_index&quot;</span>: <span class="string">&quot;metricbeat-7.6.0-2020.12.17-000001&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_type&quot;</span>: <span class="string">&quot;_doc&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_id&quot;</span>: <span class="string">&quot;r2-zbnYBzRyPohzGrQDW&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_version&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;_score&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;_source&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@timestamp&quot;</span>: <span class="string">&quot;2020-12-17T03:14:05.745Z&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;event&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;dataset&quot;</span>: <span class="string">&quot;kafka.consumergroup&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;module&quot;</span>: <span class="string">&quot;kafka&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;duration&quot;</span>: <span class="number">5123651</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;kafka&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;consumergroup&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;console-consumer-91738&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;offset&quot;</span>: <span class="number">-1</span>,</span><br><span class="line">        <span class="attr">&quot;error&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;code&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;client&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;consumer-1&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;host&quot;</span>: <span class="string">&quot;172.16.8.69&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;member_id&quot;</span>: <span class="string">&quot;consumer-1-debf38cb-e430-4dae-a204-b8bc6e02c1b0&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;broker&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;dky3:9092&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;topic&quot;</span>: <span class="string">&quot;first&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;meta&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;consumer_lag&quot;</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="attr">&quot;partition&quot;</span>: <span class="number">0</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;broker&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;dky3:9092&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;topic&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;first&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;partition&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;topic_id&quot;</span>: <span class="string">&quot;0-first&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;ecs&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;1.4.0&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;host&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;739ad040c31645de8ef7129874abd2bb&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;containerized&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">&quot;hostname&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;architecture&quot;</span>: <span class="string">&quot;x86_64&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;os&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;platform&quot;</span>: <span class="string">&quot;centos&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;7 (Core)&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;family&quot;</span>: <span class="string">&quot;redhat&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;CentOS Linux&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;kernel&quot;</span>: <span class="string">&quot;3.10.0-957.el7.x86_64&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;codename&quot;</span>: <span class="string">&quot;Core&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;agent&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;c4618f22-50db-4f4d-a19e-fab9496c4713&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;7.6.0&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;metricbeat&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ephemeral_id&quot;</span>: <span class="string">&quot;3dd11062-5728-42cd-b998-9238b15d27ba&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;hostname&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;cloud&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;machine&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;Linux_8vcpu_32Gmem_22Gdisk&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;instance&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;i-000033e3&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;availability_zone&quot;</span>: <span class="string">&quot;nova&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;provider&quot;</span>: <span class="string">&quot;openstack&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;metricset&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;consumergroup&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;period&quot;</span>: <span class="number">10000</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;service&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;127.0.0.1:9092&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;kafka&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;fields&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@timestamp&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;2020-12-17T03:14:05.745Z&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h3><p>根据日志信息可知：存在大部分调研需求的内容，少部分内容名称不精确属于未知状态但有相似字段，需要时根据字段可进一步获取。</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>是否存在</th>
-<th>内容属性</th>
-<th>补充</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>集群名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>可获取到但本地为搭建集群</td>
-</tr>
-<tr>
-<td>topic名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>分区名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>采集开始时间</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在采集开始时间戳</td>
-</tr>
-<tr>
-<td>采集结束时间</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>未发现结束标志</td>
-</tr>
-<tr>
-<td>current_offset</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在partition.offset.newest</td>
-</tr>
-<tr>
-<td>log_end_offset</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在partition.offset.oldest</td>
-</tr>
-<tr>
-<td>lag</td>
-<td>是</td>
-<td>调研需求</td>
-<td>存在consumergroup.consumer_lag</td>
-</tr>
-<tr>
-<td>消费者组</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>监控侧会根据topic名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-<tr>
-<td>分区名称区分业务</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>注意：此次调研es、metricbeat、kibana版本为7.6.0，kafka版本为2.11-2.2.2，zookeeper版本3.5.8，不同版本之间可能存在不同，以实际情况为准。</p>
-</blockquote>
+<p><img src="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/1606871066168.png" alt="1606871066168"></p>
+<p><strong>系统最终配置拓扑图</strong></p>
+<p><img src="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/1606871336612.png" alt="1606871336612"></p>
 
                 
             </div>
@@ -835,7 +536,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://luckyuan.top/2020/12/17/README/">http://luckyuan.top/2020/12/17/README/</a>
+                    <a href="http://luckyuan.top/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/">http://luckyuan.top/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -879,6 +580,10 @@
                             
                                 <a href="/tags/%E5%B7%A5%E4%BD%9C/">
                                     <span class="chip bg-color">工作</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%88%86%E6%9E%90/">
+                                    <span class="chip bg-color">分析</span>
                                 </a>
                             
                         </div>
@@ -1048,10 +753,9 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
                 <a href="/2020/12/17/README/">
                     <div class="card-image">
@@ -1070,9 +774,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-17
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-17
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1085,7 +789,6 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -1108,13 +811,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/">
+                <a href="/2020/05/16/%E9%AB%98%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Logstash与kafka场景分析">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="深入理解多线程编程">
                         
-                        <span class="card-title">Logstash与kafka场景分析</span>
+                        <span class="card-title">深入理解多线程编程</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1125,14 +828,22 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-16
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%B0%83%E7%A0%94/" class="post-category">
-                                    工作调研
+                            <a href="/categories/Java/" class="post-category">
+                                    Java
+                                </a>
+                            
+                            <a href="/categories/Java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-category">
+                                    多线程
+                                </a>
+                            
+                            <a href="/categories/Java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E9%AB%98%E5%B9%B6%E5%8F%91/" class="post-category">
+                                    高并发
                                 </a>
                             
                             
@@ -1144,14 +855,6 @@
                     
                     <a href="/tags/%E5%AD%A6%E4%B9%A0/">
                         <span class="chip bg-color">学习</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%B7%A5%E4%BD%9C/">
-                        <span class="chip bg-color">工作</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%88%86%E6%9E%90/">
-                        <span class="chip bg-color">分析</span>
                     </a>
                     
                 </div>
