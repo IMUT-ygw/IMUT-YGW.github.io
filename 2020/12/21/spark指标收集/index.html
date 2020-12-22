@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="基于meritcbeat的kafka运行信息调研, 小袁の博客">
+    <meta name="keywords" content="小袁の博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>基于meritcbeat的kafka运行信息调研 | 小袁の博客</title>
+    <title>小袁の博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">基于meritcbeat的kafka运行信息调研</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -429,29 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/%E5%AD%A6%E4%B9%A0/">
-                                <span class="chip bg-color">学习</span>
-                            </a>
-                        
-                            <a href="/tags/%E5%B7%A5%E4%BD%9C/">
-                                <span class="chip bg-color">工作</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E5%B7%A5%E4%BD%9C%E8%B0%83%E7%A0%94/" class="post-category">
-                                工作调研
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -460,14 +443,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-17
+                    2020-12-21
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-12-17
+                    2020-12-22
                 </div>
                 
 
@@ -486,334 +469,164 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="kafka运行信息调研情况分析"><a href="#kafka运行信息调研情况分析" class="headerlink" title="kafka运行信息调研情况分析"></a>kafka运行信息调研情况分析</h2><p><strong>前言</strong></p>
-<p>针对ELK获取 Kafka 如下运行信息内容：</p>
-<a id="more"></a>
+                <h2 id="关于收集Spark-Streaming指标探究"><a href="#关于收集Spark-Streaming指标探究" class="headerlink" title="关于收集Spark  Streaming指标探究"></a>关于收集Spark  Streaming指标探究</h2><h3 id="一、MetricBeat"><a href="#一、MetricBeat" class="headerlink" title="一、MetricBeat"></a>一、MetricBeat</h3><blockquote>
+<p>尝试探究使用Elastic stack技术栈获取Flink、Spark、Streaming框架的指标信息。</p>
+<p>在Elastic Stack中关于指标信息用的大多数是Beat，而Beat的种类很多包括采集日志信息的FileBeat、获取系统心跳及连通性的HeartBeat，关于性能指标我们使用的是<strong>MetricBeat</strong>。</p>
+</blockquote>
+<p>MetricBeat内部存在可以直接使用的Moudel，如下图所示</p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608517063140.png"></p>
+<p>没有涉及Flink、Spark、Streaming的三个模块信息，下方是官方文档地址，也没有以上三个模块的相关描述。</p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-modules.html">https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-modules.html</a></p>
+<h3 id="二-、Prometheus-Grafana-Exporter"><a href="#二-、Prometheus-Grafana-Exporter" class="headerlink" title="二 、Prometheus +Grafana+Exporter"></a>二 、Prometheus +Grafana+Exporter</h3><p>在Prometheus中存在一个名为 <code>graphite_exporter</code> 探针，用于监控spark运行状况及部署信息。</p>
+<p><strong>版本信息</strong>：</p>
+<p>Prometheus ： </p>
+<p>Grafana ：</p>
+<p>graphite_exporter-0.3.0</p>
+<p>spark</p>
+<h4 id="简要概述各组件配置信息"><a href="#简要概述各组件配置信息" class="headerlink" title="简要概述各组件配置信息"></a>简要概述各组件配置信息</h4><p>详细部署请参考官方文档：<a target="_blank" rel="noopener" href="http://rokroskar.github.io/monitoring-spark-on-hadoop-with-prometheus-and-grafana.html">Monitoring Spark on Hadoop with Prometheus and Grafana</a></p>
+<blockquote>
+<p>${spark-home}/conf/metrics.properties配置文件</p>
+</blockquote>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">*.sink.graphite.class</span>=<span class="string">org.apache.spark.metrics.sink.GraphiteSink</span></span><br><span class="line"><span class="meta">*.sink.graphite.host</span>=<span class="string">127.0.0.·1</span></span><br><span class="line"><span class="meta">*.sink.graphite.port</span>=<span class="string">9108  #这里是graphite_exporter端口</span></span><br><span class="line"><span class="meta">*.sink.graphite.period</span>=<span class="string">5</span></span><br><span class="line"><span class="meta">*.sink.graphite.unit</span>=<span class="string">seconds</span></span><br><span class="line"></span><br><span class="line"><span class="meta">driver.source.jvm.class</span>=<span class="string">org.apache.spark.metrics.source.JvmSource</span></span><br><span class="line"><span class="meta">executor.source.jvm.class</span>=<span class="string">org.apache.spark.metrics.source.JvmSource</span></span><br></pre></td></tr></table></figure>
 
+<p>注意：提交时记得使用 <code>--files /path/to/spark/conf/metrics.properties</code> 参数将配置文件分发到所有的 Executor，否则将采集不到相应的 executor 数据。</p>
 <blockquote>
-<ul>
-<li><p>集群名称</p>
-</li>
-<li><p>topic名称</p>
-</li>
-<li><p>分区名称</p>
-</li>
-<li><p>采集开始时间</p>
-</li>
-<li><p>采集结束时间</p>
-</li>
-<li><p>current_offset</p>
-</li>
-<li><p>log_end_offset</p>
-</li>
-<li><p>lag</p>
-</li>
-<li><p>消费者组</p>
-</li>
-<li><p>监控侧会根据topic名称+分区名称区分业务</p>
-</li>
-</ul>
-<p>—-调研结果如下文所示—-</p>
+<p>修改${ graphite_exporter-home}/graphite_exporter_mapping</p>
 </blockquote>
-<h3 id="一、配置metricbeat"><a href="#一、配置metricbeat" class="headerlink" title="一、配置metricbeat"></a>一、配置metricbeat</h3><p><strong>功能</strong></p>
-<ul>
-<li>定期收集操作系统或应用服务的指标数据存储到Elasticsearch中，进行实时分析</li>
-<li>与filebeat功能类似，作为采集信息的应用，它的主要功能是对系统或是某个应用进行性能指标信息的采集，并通过kibana加载可视化组件进行视图层面的展示=</li>
-</ul>
-<p><strong>目录截图</strong></p>
-<p><img src="/2020/12/17/README/1608084583055.png"></p>
-<p><strong>进入模板目录</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> modules.d</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mappings:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">&#x27;*.*.executor.filesystem.*.*&#x27;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">filesystem_usage</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">application:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">executor_id:</span> <span class="string">$2</span></span><br><span class="line">    <span class="attr">fs_type:</span> <span class="string">$3</span></span><br><span class="line">    <span class="attr">qty:</span> <span class="string">$4</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">&#x27;*.*.jvm.*.*&#x27;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">jvm_memory_usage</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">application:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">executor_id:</span> <span class="string">$2</span></span><br><span class="line">    <span class="attr">mem_type:</span> <span class="string">$3</span></span><br><span class="line">    <span class="attr">qty:</span> <span class="string">$4</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">&#x27;*.*.executor.jvmGCTime.count&#x27;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">jvm_gcTime_count</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">application:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">executor_id:</span> <span class="string">$2</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">&#x27;*.*.jvm.pools.*.*&#x27;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">jvm_memory_pools</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">application:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">executor_id:</span> <span class="string">$2</span></span><br><span class="line">    <span class="attr">mem_type:</span> <span class="string">$3</span></span><br><span class="line">    <span class="attr">qty:</span> <span class="string">$4</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">&#x27;*.*.executor.threadpool.*&#x27;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">executor_tasks</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">application:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">executor_id:</span> <span class="string">$2</span></span><br><span class="line">    <span class="attr">qty:</span> <span class="string">$3</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">&#x27;*.*.BlockManager.*.*&#x27;</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">block_manager</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">application:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">executor_id:</span> <span class="string">$2</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">$3</span></span><br><span class="line">    <span class="attr">qty:</span> <span class="string">$4</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">match:</span> <span class="string">DAGScheduler.*.*</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">DAG_scheduler</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">$1</span></span><br><span class="line">    <span class="attr">qty:</span> <span class="string">$2</span></span><br></pre></td></tr></table></figure>
 
-<p>进入模板目录下可以看到有很多以某些应用名开头的 .yml 文件,其中就包含kafka.yml ,当yml带有.disabled后缀则表示此模块不可用。</p>
-<p><img src="/2020/12/17/README/1608084856287.png"></p>
-<p>也可以通过命令查看哪些模块可用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 查module列表  均在根目录下执行</span></span><br><span class="line">./metricbeat modules list</span><br><span class="line"><span class="comment">## 启用module</span></span><br><span class="line">./metricbeat modules <span class="built_in">enable</span> 模块名</span><br><span class="line"><span class="comment">## 禁用module</span></span><br><span class="line">./metricbeat modules <span class="built_in">disable</span> 模块名</span><br></pre></td></tr></table></figure>
+<p>启动spark、 graphite_exporter后，如果采集成功，将在 </p>
+<p><code>http://&lt;metrics_hostname&gt;:&lt;metrics_port&gt;/metrics</code> 页面中看到相应的信息。</p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608623788166.png"></p>
+<blockquote>
+<p>配置 Prometheus 从 graphite_exporter 获取数据</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scrape_configs:</span><br><span class="line">  - job_name: <span class="string">&#x27;spark&#x27;</span></span><br><span class="line">    static_configs:</span><br><span class="line">    - targets: [<span class="string">&#x27;localhost:9108&#x27;</span>]</span><br></pre></td></tr></table></figure>
 
-<p> <img src="/2020/12/17/README/1608121492125.png"></p>
-<p>进入 <code>/usr/local/elk/beat/metricbeat/modules.d</code>目录下</p>
-<p>执行  <code>vim kafka.yml</code>   添加配置信息</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#根据需求配置kafka信息</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">module:</span> <span class="string">kafka</span></span><br><span class="line">  <span class="attr">metricsets:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">partition</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">consumergroup</span></span><br><span class="line">  <span class="attr">period:</span> <span class="string">10s</span></span><br><span class="line">  <span class="attr">hosts:</span> [<span class="string">&quot;127.0.0.1:9092&quot;</span>]</span><br><span class="line">  <span class="attr">topics:</span> []</span><br></pre></td></tr></table></figure>
-
-<h3 id="二、开启服务"><a href="#二、开启服务" class="headerlink" title="二、开启服务"></a>二、开启服务</h3><h5 id="1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat"><a href="#1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat" class="headerlink" title="1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat"></a><strong>1、开启zookeeper、kafka、elasticsearch、kibana、metricbeat</strong></h5><p>启动过程略~</p>
-<h5 id="2、向kafka中添加topic"><a href="#2、向kafka中添加topic" class="headerlink" title="2、向kafka中添加topic"></a><strong>2、向kafka中添加topic</strong></h5><blockquote>
-<p>添加名为：first、second、third的topic</p>
-</blockquote>
-<p><strong><img src="/2020/12/17/README/1608176281715.png"></strong></p>
-<h5 id="3、向kafka中添加生产与消费"><a href="#3、向kafka中添加生产与消费" class="headerlink" title="3、向kafka中添加生产与消费"></a><strong>3、向kafka中添加生产与消费</strong></h5><p><img src="/2020/12/17/README/1608176333606.png"></p>
-<p><img src="/2020/12/17/README/1608176347929.png"></p>
-<h5 id="4、生产消费信息"><a href="#4、生产消费信息" class="headerlink" title="4、生产消费信息"></a><strong>4、生产消费信息</strong></h5><p><img src="/2020/12/17/README/1608176467039.png"></p>
-<p><img src="/2020/12/17/README/1608176480256.png"></p>
-<h5 id="5、metricbeat检测kafka信息"><a href="#5、metricbeat检测kafka信息" class="headerlink" title="5、metricbeat检测kafka信息"></a><strong>5、metricbeat检测kafka信息</strong></h5><p><img src="/2020/12/17/README/1608176512795.png"></p>
-<h3 id="三、数据及仪表盘展示"><a href="#三、数据及仪表盘展示" class="headerlink" title="三、数据及仪表盘展示"></a>三、数据及仪表盘展示</h3><h5 id="1、访问kibana"><a href="#1、访问kibana" class="headerlink" title="1、访问kibana"></a>1、访问kibana</h5><p><img src="/2020/12/17/README/1608176648764.png"></p>
-<h5 id="2、经过-索引模式-绑定后，查看数据"><a href="#2、经过-索引模式-绑定后，查看数据" class="headerlink" title="2、经过 索引模式  绑定后，查看数据"></a>2、经过 <u>索引模式</u>  绑定后，查看数据</h5><img src="/2020/12/17/README/1608177333264.png" alt="1608177333264" style="zoom: 150%;">
-
-<h5 id="3、对于kibana自带kafka试图进行分析"><a href="#3、对于kibana自带kafka试图进行分析" class="headerlink" title="3、对于kibana自带kafka试图进行分析"></a>3、对于kibana自带kafka试图进行分析</h5><ul>
-<li><strong>可通过分区名称区分业务</strong></li>
-</ul>
-<h1 id><a href="#" class="headerlink" title></a><img src="/2020/12/17/README/1608177411664.png"></h1><ul>
-<li><strong>可查看基础统计信息</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185480237.png"></p>
-<ul>
-<li><strong>Consumer Group Lag by Topic</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185618695.png"></p>
-<ul>
-<li><strong>Kafka Topic &amp; Consumer Offsets</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185719899.png"></p>
-<ul>
-<li><strong>Topic Details</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185778385.png"></p>
-<ul>
-<li><strong>Consumer Partition Reassignments</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608185812441.png"></p>
-<ul>
-<li><strong>Kafka Consumer Group Clients</strong></li>
-</ul>
-<p><img src="/2020/12/17/README/1608186160827.png"></p>
+<p>启动Prometheus 访问 <a target="_blank" rel="noopener" href="http://172.16.8.69:9090/classic/targets">http://172.16.8.69:9090/classic/targets</a></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624181043.png" alt="1608624181043"></p>
 <blockquote>
-<p><strong>整体预览</strong></p>
+<p>配置Grafana</p>
 </blockquote>
-<p><img src="/2020/12/17/README/1608186122198.png"></p>
-<blockquote>
-<p><strong>PS: 以上是针对metricbeat模板自带的视图进行分析，不能代表所有数据信息！如有需要可根据某个字段自定义视图规则创建视图进行展示。</strong></p>
-</blockquote>
-<h5 id="4、kafka信息数据展示"><a href="#4、kafka信息数据展示" class="headerlink" title="4、kafka信息数据展示"></a>4、kafka信息数据展示</h5><table>
-<thead>
-<tr>
-<th>字段名</th>
-<th>示例信息</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>agent</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>cloud</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>event</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td>host</td>
-<td>下图展示</td>
-</tr>
-<tr>
-<td><strong>kafka.broker.address</strong></td>
-<td><strong>dky3:9092</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.broker.id</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.broker.id</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.host</strong></td>
-<td><strong>172.xx.xx.xx</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.id</strong></td>
-<td><strong>consumer-1</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.client.member_id</strong></td>
-<td><strong>consumer-1-debf38cb-e430-4dae-a204-b8bc6e02c1b0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.consumer_lag</strong></td>
-<td><strong>6</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.error.code</strong></td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.id</strong></td>
-<td><strong>console-consumer-91738</strong></td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.meta</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.consumergroup.partition</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.broker.id</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.offset.newest</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.offset.oldest</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.id</strong></td>
-<td>–</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.insync_replica</strong></td>
-<td>true</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.is_leader</strong></td>
-<td>true</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.leader</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.partition.replica</strong></td>
-<td>0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic.name</strong></td>
-<td>first</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic_broker_id</strong></td>
-<td>0-first-0</td>
-</tr>
-<tr>
-<td><strong>kafka.partition.topic_id</strong></td>
-<td>0-first</td>
-</tr>
-<tr>
-<td><strong>kafka.topic.name</strong></td>
-<td>first</td>
-</tr>
-<tr>
-<td><strong>metricset.name</strong></td>
-<td>consumergroup</td>
-</tr>
-<tr>
-<td><strong>service.address</strong></td>
-<td>127.0.0.1:9092</td>
-</tr>
-<tr>
-<td><strong>metricset.period</strong></td>
-<td>10,000</td>
-</tr>
-<tr>
-<td><strong>service.type</strong></td>
-<td>kafka</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>host信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187095190.png"></p>
-<blockquote>
-<p>agent信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187191098.png"></p>
-<blockquote>
-<p>cloud信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187237329.png"></p>
-<blockquote>
-<p>event信息</p>
-</blockquote>
-<p><img src="/2020/12/17/README/1608187284450.png"></p>
-<hr>
-<p><strong>JSON格式</strong></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;_index&quot;</span>: <span class="string">&quot;metricbeat-7.6.0-2020.12.17-000001&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_type&quot;</span>: <span class="string">&quot;_doc&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_id&quot;</span>: <span class="string">&quot;r2-zbnYBzRyPohzGrQDW&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;_version&quot;</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">&quot;_score&quot;</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">&quot;_source&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@timestamp&quot;</span>: <span class="string">&quot;2020-12-17T03:14:05.745Z&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;event&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;dataset&quot;</span>: <span class="string">&quot;kafka.consumergroup&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;module&quot;</span>: <span class="string">&quot;kafka&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;duration&quot;</span>: <span class="number">5123651</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;kafka&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;consumergroup&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;console-consumer-91738&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;offset&quot;</span>: <span class="number">-1</span>,</span><br><span class="line">        <span class="attr">&quot;error&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;code&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;client&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;consumer-1&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;host&quot;</span>: <span class="string">&quot;172.16.8.69&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;member_id&quot;</span>: <span class="string">&quot;consumer-1-debf38cb-e430-4dae-a204-b8bc6e02c1b0&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;broker&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;dky3:9092&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: <span class="number">0</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;topic&quot;</span>: <span class="string">&quot;first&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;meta&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;consumer_lag&quot;</span>: <span class="number">6</span>,</span><br><span class="line">        <span class="attr">&quot;partition&quot;</span>: <span class="number">0</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;broker&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;dky3:9092&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;topic&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;first&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;partition&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">&quot;topic_id&quot;</span>: <span class="string">&quot;0-first&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;ecs&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;1.4.0&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;host&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;739ad040c31645de8ef7129874abd2bb&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;containerized&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">&quot;hostname&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;architecture&quot;</span>: <span class="string">&quot;x86_64&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;os&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;platform&quot;</span>: <span class="string">&quot;centos&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;7 (Core)&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;family&quot;</span>: <span class="string">&quot;redhat&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;CentOS Linux&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;kernel&quot;</span>: <span class="string">&quot;3.10.0-957.el7.x86_64&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;codename&quot;</span>: <span class="string">&quot;Core&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;agent&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;c4618f22-50db-4f4d-a19e-fab9496c4713&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;7.6.0&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;metricbeat&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;ephemeral_id&quot;</span>: <span class="string">&quot;3dd11062-5728-42cd-b998-9238b15d27ba&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;hostname&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;cloud&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;machine&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;Linux_8vcpu_32Gmem_22Gdisk&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;instance&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;dky001-zhuyiming.novalocal&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;id&quot;</span>: <span class="string">&quot;i-000033e3&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;availability_zone&quot;</span>: <span class="string">&quot;nova&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;provider&quot;</span>: <span class="string">&quot;openstack&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;metricset&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;consumergroup&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;period&quot;</span>: <span class="number">10000</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;service&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;address&quot;</span>: <span class="string">&quot;127.0.0.1:9092&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;kafka&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;fields&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;@timestamp&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;2020-12-17T03:14:05.745Z&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="四、结论"><a href="#四、结论" class="headerlink" title="四、结论"></a>四、结论</h3><p>根据日志信息可知：存在大部分调研需求的内容，少部分内容名称不精确属于未知状态但有相似字段，需要时根据字段可进一步获取。</p>
-<table>
+<p>启动Grafana 访问 <a target="_blank" rel="noopener" href="http://172.16.8.69:3000/">http://172.16.8.69:3000/</a></p>
+<p><strong>添加Data Sources</strong></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624304397.png"></p>
+<p><strong>添加Spark 仪表盘模板</strong></p>
+<p>官网查询spark仪表盘id或下载json文件等 : <a target="_blank" rel="noopener" href="https://grafana.com/grafana/dashboards?search=spark">https://grafana.com/grafana/dashboards?search=spark</a></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624465267.png" alt="1608624465267"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624574810.png"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624622700.png"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624679041.png"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624741808.png" alt="视图展示"></p>
+<h4 id="效果演示"><a href="#效果演示" class="headerlink" title="效果演示"></a>效果演示</h4><p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624793753.png"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624903492.png"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624927111.png"></p>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608624954626.png"></p>
+<h4 id="针对仪表盘数据分析"><a href="#针对仪表盘数据分析" class="headerlink" title="针对仪表盘数据分析"></a>针对仪表盘数据分析</h4><table>
 <thead>
 <tr>
 <th>名称</th>
-<th>是否存在</th>
-<th>内容属性</th>
-<th>补充</th>
+<th>子集</th>
+<th>备注</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>集群名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>可获取到但本地为搭建集群</td>
+<td>Driver Info</td>
+<td>Driver Id Address、Driver Status</td>
+<td></td>
 </tr>
 <tr>
-<td>topic名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
+<td></td>
+<td>Total Memory 、 Total CPU Cores</td>
+<td></td>
 </tr>
 <tr>
-<td>分区名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
+<td>Total Memory</td>
+<td>Driver\Executor  Memory Usages</td>
+<td></td>
 </tr>
 <tr>
-<td>采集开始时间</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在采集开始时间戳</td>
+<td>Driver CPU / Memory usage</td>
+<td>Driver CPU usages 、 Driver GC</td>
+<td></td>
 </tr>
 <tr>
-<td>采集结束时间</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>未发现结束标志</td>
+<td>Executor CPU /Memory Usage</td>
+<td>Executor CPU usages 、 Executor GC</td>
+<td></td>
 </tr>
 <tr>
-<td>current_offset</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在partition.offset.newest</td>
+<td>Network IO</td>
+<td>Driver NetWork IO 、Executor Transmitted</td>
+<td>网络传输</td>
 </tr>
 <tr>
-<td>log_end_offset</td>
-<td>未知</td>
-<td>调研需求</td>
-<td>存在partition.offset.oldest</td>
+<td></td>
+<td>Executor NetWork Received</td>
+<td></td>
 </tr>
 <tr>
-<td>lag</td>
-<td>是</td>
-<td>调研需求</td>
-<td>存在consumergroup.consumer_lag</td>
+<td>Disk IO</td>
+<td>Disk Read Bytes</td>
+<td>磁盘读写</td>
 </tr>
 <tr>
-<td>消费者组</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
+<td></td>
+<td>Disk Writes Bytes</td>
+<td></td>
 </tr>
 <tr>
-<td>监控侧会根据topic名称</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
+<td>Spark External Shuffle</td>
+<td>Spark Shuffle NetWrok Transmitted</td>
+<td></td>
 </tr>
 <tr>
-<td>分区名称区分业务</td>
-<td>是</td>
-<td>调研需求</td>
-<td>无</td>
+<td></td>
+<td>Spark Shuffle NetWrok Receiverd</td>
+<td></td>
+</tr>
+<tr>
+<td>Memory Heap / Non - Heap</td>
+<td>Heap Memory</td>
+<td>堆内存</td>
+</tr>
+<tr>
+<td>JVM Threads &amp; Memory Pool</td>
+<td>Memory pool 、 JVM Threads、</td>
+<td>内存池</td>
+</tr>
+<tr>
+<td></td>
+<td>Executor：completd Tasks</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Executor：Active Tasks</td>
+<td></td>
+</tr>
+<tr>
+<td>Miscellaneous Info</td>
+<td>Executor Spawned 、 Dropped Package</td>
+<td></td>
+</tr>
+<tr>
+<td>网络图片</td>
+<td>worker 数量  、可用数量</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Apps数量、等待数量</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>Executor 数量、空闲数、内存等</td>
+<td></td>
 </tr>
 </tbody></table>
-<blockquote>
-<p>注意：此次调研es、metricbeat、kibana版本为7.6.0，kafka版本为2.11-2.2.2，zookeeper版本3.5.8，不同版本之间可能存在不同，以实际情况为准。</p>
-</blockquote>
+<p><img src="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/1608639349875.png" alt="网络图片"></p>
 
                 
             </div>
@@ -840,7 +653,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://luckyuan.top/2020/12/17/README/">http://luckyuan.top/2020/12/17/README/</a>
+                    <a href="http://luckyuan.top/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/">http://luckyuan.top/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -877,15 +690,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/%E5%AD%A6%E4%B9%A0/">
-                                    <span class="chip bg-color">学习</span>
-                                </a>
-                            
-                                <a href="/tags/%E5%B7%A5%E4%BD%9C/">
-                                    <span class="chip bg-color">工作</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1053,9 +858,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/12/21/spark%E6%8C%87%E6%A0%87%E6%94%B6%E9%9B%86/">
                     <div class="card-image">
@@ -1073,9 +879,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -1084,6 +890,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -1094,24 +901,25 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/12/06/Logstash%E4%B8%8Ekafka%E5%9C%BA%E6%99%AF%E5%88%86%E6%9E%90/">
+                <a href="/2020/12/17/README/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Logstash与kafka场景分析">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="基于meritcbeat的kafka运行信息调研">
                         
-                        <span class="card-title">Logstash与kafka场景分析</span>
+                        <span class="card-title">基于meritcbeat的kafka运行信息调研</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            kafka运行信息调研情况分析前言
+针对ELK获取 Kafka 如下运行信息内容：
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-17
                             </span>
                         <span class="publish-author">
                             
@@ -1134,10 +942,6 @@
                     
                     <a href="/tags/%E5%B7%A5%E4%BD%9C/">
                         <span class="chip bg-color">工作</span>
-                    </a>
-                    
-                    <a href="/tags/%E5%88%86%E6%9E%90/">
-                        <span class="chip bg-color">分析</span>
                     </a>
                     
                 </div>
